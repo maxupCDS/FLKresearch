@@ -5,38 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>자율주행 시승 만족도 조사</title>
     <style>
-        /* 기본 레이아웃 설정 */
+        /* 기본 레이아웃 및 여백 초기화 */
         * { box-sizing: border-box; }
         body { font-family: 'Noto Sans KR', sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
+        /* 설문 카드 메인 구조 (테두리가 둥글고 넘치는 요소를 깔끔하게 제한) */
         .survey-container { width: 100%; max-width: 450px; background: #fff; border-radius: 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
         
-        /* 헤더 이미지 컨테이너 */
-        .header-image { width: 100%; height: 200px; overflow: hidden; position: relative; background-color: #fafafa; }
-        .header-image img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease; }
+        /* 1. 헤더 이미지 공간 최적화 (모바일 비례 사이즈 조절) */
+        .header-image { width: 100%; height: 180px; overflow: hidden; position: relative; background-color: #fafafa; }
+        .header-image img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease; display: block; }
         
-        /* 텍스트 영역 패딩 */
+        /* 내부 내용 영역 패딩 */
         .content-padding { padding: 25px; }
 
-        /* 대제목: 모바일 대응 한 줄 처리 */
-        h1 { font-size: 17px; text-align: center; color: #1a365d; margin: 0 0 5px 0; white-space: nowrap; letter-spacing: -0.5px; }
+        /* 2. 대제목 텍스트 흐름 개선 (우측 말줄임 점 3개 제거 및 한 줄 정렬 유지) */
+        h1 { font-size: 17px; text-align: center; color: #1a365d; margin: 0 0 5px 0; letter-spacing: -0.5px; word-break: keep-all; }
         .subtitle { text-align: center; font-size: 12px; color: #718096; margin-bottom: 20px; font-weight: 500; }
         
-        /* 진행바 */
+        /* 진행률 표시선 */
         .progress-container { background-color: #edf2f7; height: 4px; border-radius: 2px; margin-bottom: 20px; overflow: hidden; display: none; }
         .progress-bar { height: 100%; background: linear-gradient(90deg, #3182ce, #63b3ed); width: 0%; transition: width 0.3s ease; }
         .progress-text { text-align: right; font-size: 11px; color: #a0aec0; margin-top: 4px; display: none; margin-bottom: 10px; }
 
-        /* 스텝 제어 */
+        /* 스텝 제어 애니메이션 */
         .step { display: none; }
         .step.active { display: block; animation: slideUp 0.5s ease; }
         
         .intro-text { text-align: center; font-size: 14px; line-height: 1.7; color: #4a5568; margin-bottom: 20px; }
         
-        /* 질문 타이틀 */
+        /* 질문 타이틀 가독성 증가 (줄바꿈이 잘리지 않고 무조건 다음 줄로 줄바꿈 처리) */
         .question-title { font-size: 16px; font-weight: 700; color: #2d3748; margin-bottom: 20px; line-height: 1.5; word-break: keep-all; }
         
-        /* 답변 리스트 및 버튼 */
+        /* 선택지 레이아웃 */
         .options-list { list-style: none; padding: 0; margin: 0; }
         .option-item { margin-bottom: 12px; }
         .option-item input[type="radio"] { display: none; }
@@ -45,11 +46,11 @@
         .ans-main { display: block; font-size: 15px; font-weight: 600; color: #2d3748; margin-bottom: 4px; }
         .ans-sub { display: block; font-size: 12px; color: #718096; font-weight: 400; line-height: 1.4; }
         
-        /* 선택 시 효과 */
+        /* 라디오 버튼 체크 상태 스타일 */
         .option-item input[type="radio"]:checked + label { background: #ebf8ff; border-color: #3182ce; }
         .option-item input[type="radio"]:checked + label .ans-main { color: #2b6cb0; }
 
-        /* 하단 내비게이션 버튼 */
+        /* 내비게이션 하단 이동 버튼군 */
         .btn-group { display: flex; justify-content: space-between; gap: 10px; margin-top: 25px; }
         .nav-btn { flex: 1; padding: 15px; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
         .prev-btn { background: #f1f5f9; color: #64748b; }
@@ -57,7 +58,7 @@
         .submit-btn { background: #38a169; color: #fff; }
         .nav-btn:active { transform: scale(0.97); }
 
-        /* 커스텀 모달 알림창 */
+        /* 제출 완료 커스텀 알림 모달 */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-box { background: #fff; width: 85%; max-width: 340px; padding: 35px 25px; border-radius: 24px; text-align: center; transform: scale(0.9); transition: 0.3s; }
@@ -88,10 +89,11 @@
         <div class="progress-text" id="progressText">0 / 10</div>
 
         <form id="surveyForm">
+            <!-- 0단계: 진입 시작화면 -->
             <div class="step active" id="step0">
-                <div class="subtitle">퓨처링크 & 아주대학교 시승 프로젝트</div>
+                <div class="subtitle">퓨처링크 시승 프로젝트</div>
                 <div class="intro-text">
-                    미래 교통 시스템의 혁신, 자율주행 시승을 경험해 주셔서 감사합니다.<br><br>
+                    자율주행 시승을 경험해 주셔서 감사합니다.<br><br>
                     고객님의 피드백은 기술 고도화의 핵심 자료가 됩니다. (약 2분 소요)
                 </div>
                 <div class="btn-group">
@@ -99,6 +101,7 @@
                 </div>
             </div>
 
+            <!-- 1단계: 안정성 만족도 -->
             <div class="step" id="step1">
                 <div class="question-title">1. 시승 중 자율주행 차량의 전반적인 주행 안정성에 대해 얼마나 만족하셨습니까?</div>
                 <div class="options-list">
@@ -113,6 +116,7 @@
                 </div>
             </div>
 
+            <!-- 2단계: 돌발대응력 -->
             <div class="step" id="step2">
                 <div class="question-title">2. 장애물 및 돌발 상황에서의 '안전 중심 보수적 대응'에 대해 어떻게 생각하십니까?</div>
                 <div class="options-list">
@@ -127,6 +131,7 @@
                 </div>
             </div>
 
+            <!-- 3단계: 시간 및 경로 길이 -->
             <div class="step" id="step3">
                 <div class="question-title">3. 이번 시승 체험의 '탑승 시간 및 주행 코스 길이'는 적절했습니까?</div>
                 <div class="options-list">
@@ -141,6 +146,7 @@
                 </div>
             </div>
 
+            <!-- 4단계: 디스플레이 정보 개선점 -->
             <div class="step" id="step4">
                 <div class="question-title">4. 차량 내부 디스플레이 정보 중 가장 개선이 필요한 부분은 무엇입니까?</div>
                 <div class="options-list">
@@ -155,6 +161,7 @@
                 </div>
             </div>
 
+            <!-- 5단계: 유턴 수행 성능 -->
             <div class="step" id="step5">
                 <div class="question-title">5. 유턴(U-Turn) 시 차량의 조향 능력과 회전반경 제어에 대한 느낌은 어떠하셨습니까?</div>
                 <div class="options-list">
@@ -169,6 +176,7 @@
                 </div>
             </div>
 
+            <!-- 6단계: 가감속 조향 승차감 -->
             <div class="step" id="step6">
                 <div class="question-title">6. 주행 중 승객이 느낀 '가감속 및 조향 승차감'은 어떠하셨습니까?</div>
                 <div class="options-list">
@@ -183,6 +191,7 @@
                 </div>
             </div>
 
+            <!-- 7단계: 사전 브리핑 -->
             <div class="step" id="step7">
                 <div class="question-title">7. 탑승 전 진행된 '사전 브리핑'이 차량을 이해하는 데 도움이 되었습니까?</div>
                 <div class="options-list">
@@ -197,6 +206,7 @@
                 </div>
             </div>
 
+            <!-- 8단계: 실시간 음성/화면 안내 -->
             <div class="step" id="step8">
                 <div class="question-title">8. 탑승 중 제공된 '실시간 음성 및 화면 안내'에 대해 어떻게 생각하십니까?</div>
                 <div class="options-list">
@@ -211,6 +221,7 @@
                 </div>
             </div>
 
+            <!-- 9단계: 향후 상용서비스 이용의향 -->
             <div class="step" id="step9">
                 <div class="question-title">9. 향후 상용화될 '자율주행 대중교통 서비스'를 이용할 의향이 있으십니까?</div>
                 <div class="options-list">
@@ -225,6 +236,7 @@
                 </div>
             </div>
 
+            <!-- 10단계: 서비스 확대 보완분야 -->
             <div class="step" id="step10">
                 <div class="question-title">10. 성공적인 서비스 확대를 위해 가장 보완되어야 할 분야는 무엇입니까?</div>
                 <div class="options-list">
@@ -242,6 +254,7 @@
     </div>
 </div>
 
+<!-- 제출 성공 커스텀 모달 윈도우 -->
 <div class="modal-overlay" id="successModal">
     <div class="modal-box">
         <div class="modal-icon">✓</div>
@@ -255,19 +268,19 @@
     let currentStep = 0;
     const totalQuestions = 10;
 
-    // 이미지 경로 매핑 (0번은 올려주신 이미지, 1~10번은 자율주행 관련 매칭 이미지)
+    // 단계별 이미지 소스 배열 (0번은 최초 업로드 이미지, 1~10번은 자율주행 관련 이미지)
     const images = [
-        "image.png", // 시작화면: GitHub에 올리신 로고/회사 이미지
-        "http://googleusercontent.com/image_collection/image_retrieval/2459628679864763312", // Q1 안정성 (자율주행 주행뷰)
-        "http://googleusercontent.com/image_collection/image_retrieval/3389964108802860169", // Q2 돌발상황 (센서 라이다 맵)
-        "http://googleusercontent.com/image_collection/image_retrieval/16436108566552040686", // Q3 주행코스 (도심 도로 그래픽)
-        "http://googleusercontent.com/image_collection/image_retrieval/13141053502842046121", // Q4 디스플레이 (차량 인포테인먼트 화면)
-        "http://googleusercontent.com/image_collection/image_retrieval/8465559793116705264",  // Q5 유턴 (조향 핸들 제어)
-        "http://googleusercontent.com/image_collection/image_retrieval/15920312737266526803", // Q6 승차감 (안정적인 실내 탑승 전경)
-        "http://googleusercontent.com/image_collection/image_retrieval/3741523699117084016",  // Q7 사전브리핑 (가이드 패드 화면)
-        "http://googleusercontent.com/image_collection/image_retrieval/11593747768146567761", // Q8 음성안내 (스마트 커넥티드 그래픽)
-        "http://googleusercontent.com/image_collection/image_retrieval/14229820167265840050", // Q9 이용의향 (미래형 자율주행 셔틀)
-        "http://googleusercontent.com/image_collection/image_retrieval/8245988285067695450"   // Q10 서비스 확대 (스마트시티 네트워크)
+        "image.png", // 시작 화면
+        "http://googleusercontent.com/image_collection/image_retrieval/2459628679864763312", // 1번 문항
+        "http://googleusercontent.com/image_collection/image_retrieval/3389964108802860169", // 2번 문항
+        "http://googleusercontent.com/image_collection/image_retrieval/16436108566552040686", // 3번 문항
+        "http://googleusercontent.com/image_collection/image_retrieval/13141053502842046121", // 4번 문항
+        "http://googleusercontent.com/image_collection/image_retrieval/8465559793116705264",  // 5번 문항
+        "http://googleusercontent.com/image_collection/image_retrieval/15920312737266526803", // 6번 문항
+        "http://googleusercontent.com/image_collection/image_retrieval/3741523699117084016",  // 7번 문항
+        "http://googleusercontent.com/image_collection/image_retrieval/11593747768146567761", // 8번 문항
+        "http://googleusercontent.com/image_collection/image_retrieval/14229820167265840050", // 9번 문항
+        "http://googleusercontent.com/image_collection/image_retrieval/8245988285067695450"   // 10번 문항
     ];
 
     function updateProgressBar(step) {
@@ -277,7 +290,7 @@
         const title = document.getElementById('mainTitle');
         const img = document.getElementById('currentImg');
         
-        // 이미지 자연스럽게 교체
+        // 이미지 부드러운 디졸브 전환
         img.style.opacity = 0;
         setTimeout(() => {
             img.src = images[step];
@@ -365,4 +378,3 @@
 </script>
 </body>
 </html>
-```
