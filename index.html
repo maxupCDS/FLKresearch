@@ -5,73 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>자율주행 시승 만족도 조사</title>
     <style>
+        /* 기본 레이아웃 설정 */
         * { box-sizing: border-box; }
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f4f6f9; margin: 0; padding: 15px; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         
-        .survey-container { width: 100%; max-width: 450px; background: #fff; padding: 25px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); position: relative; }
+        .survey-container { width: 100%; max-width: 450px; background: #fff; border-radius: 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
         
-        /* 대제목 크기 축소: 한 줄에 들어오도록 조정 */
-        h1 { font-size: 18px; text-align: center; color: #1a365d; margin-top: 0; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        /* 헤더 이미지 컨테이너 */
+        .header-image { width: 100%; height: 200px; overflow: hidden; position: relative; background-color: #fafafa; }
+        .header-image img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease; }
         
-        .subtitle { text-align: center; font-size: 13px; color: #666; margin-bottom: 25px; line-height: 1.5; }
-        
-        /* 진행도 표시 */
-        .progress-container { width: 100%; background-color: #edf2f7; height: 6px; border-radius: 3px; margin-bottom: 25px; overflow: hidden; display: none; }
-        .progress-bar { height: 100%; background-color: #3182ce; width: 0%; transition: width 0.3s ease; }
-        .progress-text { text-align: right; font-size: 11px; color: #718096; margin-top: 4px; display: none; }
+        /* 텍스트 영역 패딩 */
+        .content-padding { padding: 25px; }
 
-        /* 페이지 제어 */
+        /* 대제목: 모바일 대응 한 줄 처리 */
+        h1 { font-size: 17px; text-align: center; color: #1a365d; margin: 0 0 5px 0; white-space: nowrap; letter-spacing: -0.5px; }
+        .subtitle { text-align: center; font-size: 12px; color: #718096; margin-bottom: 20px; font-weight: 500; }
+        
+        /* 진행바 */
+        .progress-container { background-color: #edf2f7; height: 4px; border-radius: 2px; margin-bottom: 20px; overflow: hidden; display: none; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #3182ce, #63b3ed); width: 0%; transition: width 0.3s ease; }
+        .progress-text { text-align: right; font-size: 11px; color: #a0aec0; margin-top: 4px; display: none; margin-bottom: 10px; }
+
+        /* 스텝 제어 */
         .step { display: none; }
-        .step.active { display: block; animation: fadeIn 0.4s ease; }
+        .step.active { display: block; animation: slideUp 0.5s ease; }
         
-        .intro-content { text-align: center; padding: 10px; font-size: 14px; line-height: 1.6; color: #4a5568; }
+        .intro-text { text-align: center; font-size: 14px; line-height: 1.7; color: #4a5568; margin-bottom: 20px; }
         
-        /* 문항 스타일 */
-        .question-title { font-size: 16px; font-weight: bold; color: #2d3748; margin-bottom: 22px; line-height: 1.5; word-break: keep-all; }
+        /* 질문 타이틀 */
+        .question-title { font-size: 16px; font-weight: 700; color: #2d3748; margin-bottom: 20px; line-height: 1.5; word-break: keep-all; }
+        
+        /* 답변 리스트 및 버튼 */
         .options-list { list-style: none; padding: 0; margin: 0; }
-        .option-item { margin-bottom: 14px; }
-        
-        /* 라디오 버튼 숨김 */
+        .option-item { margin-bottom: 12px; }
         .option-item input[type="radio"] { display: none; }
+        .option-item label { display: block; padding: 14px 18px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
         
-        /* 버튼 디자인: 메인 답변과 부가 설명 분리 */
-        .option-item label { display: block; padding: 14px 18px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.25s ease; }
+        .ans-main { display: block; font-size: 15px; font-weight: 600; color: #2d3748; margin-bottom: 4px; }
+        .ans-sub { display: block; font-size: 12px; color: #718096; font-weight: 400; line-height: 1.4; }
         
-        /* 메인 답변 텍스트 */
-        .ans-main { display: block; font-size: 15px; font-weight: 500; color: #2d3748; margin-bottom: 4px; }
-        
-        /* 부가 설명 텍스트 (아래쪽 배치) */
-        .ans-sub { display: block; font-size: 12px; color: #718096; font-weight: normal; line-height: 1.3; }
-        
-        /* 선택 시 스타일 */
-        .option-item input[type="radio"]:checked + label { background: #ebf8ff; border-color: #3182ce; box-shadow: 0 4px 12px rgba(49, 130, 206, 0.15); }
-        .option-item input[type="radio"]:checked + label .ans-main { color: #2b6cb0; font-weight: bold; }
-        .option-item input[type="radio"]:checked + label .ans-sub { color: #4299e1; }
-        
-        /* 버튼 영역 */
-        .btn-group { display: flex; justify-content: space-between; margin-top: 30px; gap: 10px; }
+        /* 선택 시 효과 */
+        .option-item input[type="radio"]:checked + label { background: #ebf8ff; border-color: #3182ce; }
+        .option-item input[type="radio"]:checked + label .ans-main { color: #2b6cb0; }
+
+        /* 하단 내비게이션 버튼 */
+        .btn-group { display: flex; justify-content: space-between; gap: 10px; margin-top: 25px; }
         .nav-btn { flex: 1; padding: 15px; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
         .prev-btn { background: #f1f5f9; color: #64748b; }
         .next-btn, .start-btn { background: #3182ce; color: #fff; }
         .submit-btn { background: #38a169; color: #fff; }
-        .nav-btn:active { transform: scale(0.98); }
+        .nav-btn:active { transform: scale(0.97); }
 
-        /* ✨ 세련된 커스텀 알림창(모달) 스타일 구조 */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        /* 커스텀 모달 알림창 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        
-        .modal-box { background: #fff; width: 85%; max-width: 340px; padding: 30px 24px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transform: translateY(20px); transition: all 0.3s ease; }
-        .modal-overlay.active .modal-box { transform: translateY(0); }
-        
-        /* 모달 내부 체크 마크 아이콘 디자인 */
-        .modal-icon { width: 56px; height: 56px; background: #e6f4ea; color: #34a853; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; font-weight: bold; margin: 0 auto 18px auto; }
-        .modal-title { font-size: 18px; font-weight: bold; color: #202124; margin-bottom: 10px; }
-        .modal-desc { font-size: 14px; color: #5f6368; line-height: 1.5; margin-bottom: 24px; word-break: keep-all; }
-        .modal-btn { width: 100%; padding: 14px; background: #3182ce; color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-        .modal-btn:hover { background: #2b6cb0; }
+        .modal-box { background: #fff; width: 85%; max-width: 340px; padding: 35px 25px; border-radius: 24px; text-align: center; transform: scale(0.9); transition: 0.3s; }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-icon { width: 60px; height: 60px; background: #e6f4ea; color: #34a853; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 20px; }
+        .modal-title { font-size: 19px; font-weight: bold; margin-bottom: 12px; }
+        .modal-desc { font-size: 14px; color: #5f6368; line-height: 1.6; margin-bottom: 25px; }
+        .modal-btn { width: 100%; padding: 15px; background: #3182ce; color: #fff; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -79,407 +76,170 @@
 <body>
 
 <div class="survey-container">
-    <h1 id="mainTitle">자율주행자동차 시승 만족도 조사</h1>
-    
-    <div class="progress-container" id="progressContainer">
-        <div class="progress-bar" id="progressBar"></div>
+    <div class="header-image" id="headerImage">
+        <img id="currentImg" src="image.png" alt="설문지 상단 이미지">
     </div>
-    <div class="progress-text" id="progressText">0 / 10</div>
 
-    <form id="surveyForm">
-        
-        <div class="step active" id="step0">
-            <div class="subtitle">퓨처링크 자율주행자동차 시승 체험 피드백</div>
-            <div class="intro-content">
-                시승을 마친 고객님의 의견을 수렴합니다.<br><br>
-                총 <strong>10개 문항</strong>으로 구성되어 있으며,<br>약 2분 정도가 소요됩니다.
-            </div>
-            <div class="btn-group">
-                <button type="button" class="start-btn nav-btn" onclick="nextStep(1)">설문 시작하기</button>
-            </div>
+    <div class="content-padding">
+        <h1 id="mainTitle">자율주행자동차 시승 만족도 조사</h1>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
         </div>
+        <div class="progress-text" id="progressText">0 / 10</div>
 
-        <div class="step" id="step1">
-            <div class="question-title">1. 시승 중 자율주행 차량의 전반적인 주행 안정성에 대해 얼마나 만족하셨습니까?</div>
-            <div class="options-list">
-                <div class="option-item">
-                    <input type="radio" name="q1" id="q1_1" value="매우 만족" required>
-                    <label for="q1_1">
-                        <span class="ans-main">매우 만족</span>
-                        <span class="ans-sub">예상보다 매우 안정적이고 자연스럽게 주행함</span>
-                    </label>
+        <form id="surveyForm">
+            <div class="step active" id="step0">
+                <div class="subtitle">퓨처링크 & 아주대학교 시승 프로젝트</div>
+                <div class="intro-text">
+                    미래 교통 시스템의 혁신, 자율주행 시승을 경험해 주셔서 감사합니다.<br><br>
+                    고객님의 피드백은 기술 고도화의 핵심 자료가 됩니다. (약 2분 소요)
                 </div>
-                <div class="option-item">
-                    <input type="radio" name="q1" id="q1_2" value="만족">
-                    <label for="q1_2">
-                        <span class="ans-main">만족</span>
-                        <span class="ans-sub">대체로 안전을 우선으로 판단하여 신뢰감이 들었음</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q1" id="q1_3" value="보통">
-                    <label for="q1_3">
-                        <span class="ans-main">보통</span>
-                        <span class="ans-sub">일반 차량과 큰 차이를 느끼지 못함</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q1" id="q1_4" value="불만족">
-                    <label for="q1_4">
-                        <span class="ans-main">불만족</span>
-                        <span class="ans-sub">일부 구간에서 불안하거나 제어가 불안정했음</span>
-                    </label>
+                <div class="btn-group">
+                    <button type="button" class="start-btn nav-btn" onclick="nextStep(1)">시작하기</button>
                 </div>
             </div>
-            <div class="btn-group">
-                <button type="button" class="prev-btn nav-btn" onclick="prevStep(0)">이전</button>
-                <button type="button" class="next-btn nav-btn" onclick="nextStep(2)">다음</button>
-            </div>
-        </div>
 
-        <div class="step" id="step2">
-            <div class="question-title">2. 장애물 및 돌발 상황에서의 '안전 중심 보수적 대응'에 대해 어떻게 생각하십니까?</div>
-            <div class="options-list">
-                <div class="option-item">
-                    <input type="radio" name="q2" id="q2_1" value="매우 만족" required>
-                    <label for="q2_1">
-                        <span class="ans-main">매우 만족</span>
-                        <span class="ans-sub">안전을 최우선으로 하여 매우 든든했음</span>
-                    </label>
+            <div class="step" id="step1">
+                <div class="question-title">1. 시승 중 자율주행 차량의 전반적인 주행 안정성에 대해 얼마나 만족하셨습니까?</div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="q1" id="q1_1" value="매우 만족" required><label for="q1_1"><span class="ans-main">매우 만족</span><span class="ans-sub">예상보다 매우 안정적이고 자연스럽게 주행함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q1" id="q1_2" value="만족"><label for="q1_2"><span class="ans-main">만족</span><span class="ans-sub">대체로 안전을 우선으로 판단하여 신뢰감이 들었음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q1" id="q1_3" value="보통"><label for="q1_3"><span class="ans-main">보통</span><span class="ans-sub">일반 차량과 큰 차이를 느끼지 못함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q1" id="q1_4" value="불만족"><label for="q1_4"><span class="ans-main">불만족</span><span class="ans-sub">일부 구간에서 불안하거나 제어가 불안정했음</span></label></div>
                 </div>
-                <div class="option-item">
-                    <input type="radio" name="q2" id="q2_2" value="보통">
-                    <label for="q2_2">
-                        <span class="ans-main">보통</span>
-                        <span class="ans-sub">안전하긴 했으나, 간혹 지나치게 방어적이라 답답함</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q2" id="q2_3" value="불만족">
-                    <label for="q2_3">
-                        <span class="ans-main">불만족</span>
-                        <span class="ans-sub">지나친 대기로 인해 주행 답답함이 컸음</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q2" id="q2_4" value="잘 모르겠음">
-                    <label for="q2_4">
-                        <span class="ans-main">잘 모르겠음</span>
-                        <span class="ans-sub">해당 상황을 명확히 경험하지 못함</span>
-                    </label>
+                <div class="btn-group">
+                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(0)">이전</button>
+                    <button type="button" class="next-btn nav-btn" onclick="nextStep(2)">다음</button>
                 </div>
             </div>
-            <div class="btn-group">
-                <button type="button" class="prev-btn nav-btn" onclick="prevStep(1)">이전</button>
-                <button type="button" class="next-btn nav-btn" onclick="nextStep(3)">다음</button>
-            </div>
-        </div>
 
-        <div class="step" id="step3">
-            <div class="question-title">3. 이번 시승 체험의 '탑승 시간 및 주행 코스 길이'는 적절했습니까?</div>
-            <div class="options-list">
-                <div class="option-item">
-                    <input type="radio" name="q3" id="q3_1" value="매우 적절함" required>
-                    <label for="q3_1">
-                        <span class="ans-main">매우 적절함</span>
-                        <span class="ans-sub">핵심 기능을 충분히 체험하기에 알맞은 시간임</span>
-                    </label>
+            <div class="step" id="step2">
+                <div class="question-title">2. 장애물 및 돌발 상황에서의 '안전 중심 보수적 대응'에 대해 어떻게 생각하십니까?</div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="q2" id="q2_1" value="매우 만족" required><label for="q2_1"><span class="ans-main">매우 만족</span><span class="ans-sub">안전을 최우선으로 하여 매우 든든했음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_2" value="보통"><label for="q2_2"><span class="ans-main">보통</span><span class="ans-sub">안전하긴 했으나, 간혹 지나치게 방어적이라 답답함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_3" value="불만족"><label for="q2_3"><span class="ans-main">불만족</span><span class="ans-sub">지나친 대기로 인해 주행 답답함이 컸음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_4" value="잘 모르겠음"><label for="q2_4"><span class="ans-main">잘 모르겠음</span><span class="ans-sub">해당 상황을 명확히 경험하지 못함</span></label></div>
                 </div>
-                <div class="option-item">
-                    <input type="radio" name="q3" id="q3_2" value="너무 짧음">
-                    <label for="q3_2">
-                        <span class="ans-main">너무 짧음</span>
-                        <span class="ans-sub">자율주행의 특징을 느끼기에 시간이 부족함</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q3" id="q3_3" value="너무 길음">
-                    <label for="q3_3">
-                        <span class="ans-main">너무 길음</span>
-                        <span class="ans-sub">시간이 길어 다소 지루하거나 피로감을 느꼈음</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q3" id="q3_4" value="기타">
-                    <label for="q3_4">
-                        <span class="ans-main">기타</span>
-                        <span class="ans-sub">시간은 적당하나 도로 정체 등이 심했음</span>
-                    </label>
+                <div class="btn-group">
+                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(1)">이전</button>
+                    <button type="button" class="next-btn nav-btn" onclick="nextStep(3)">다음</button>
                 </div>
             </div>
-            <div class="btn-group">
-                <button type="button" class="prev-btn nav-btn" onclick="prevStep(2)">이전</button>
-                <button type="button" class="next-btn nav-btn" onclick="nextStep(4)">다음</button>
-            </div>
-        </div>
 
-        <div class="step" id="step4">
-            <div class="question-title">4. 차량 내부 디스플레이 정보 중 가장 개선이 필요한 부분은 무엇입니까?</div>
-            <div class="options-list">
-                <div class="option-item">
-                    <input type="radio" name="q4" id="q4_1" value="전반적으로 만족함" required>
-                    <label for="q4_1">
-                        <span class="ans-main">전반적으로 만족함</span>
-                        <span class="ans-sub">화면을 통해 차량의 판단을 잘 이해할 수 있었음</span>
-                    </label>
+            <div class="step" id="step3">
+                <div class="question-title">3. 이번 시승 체험의 '탑승 시간 및 주행 코스 길이'는 적절했습니까?</div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="q3" id="q3_1" value="매우 적절함" required><label for="q3_1"><span class="ans-main">매우 적절함</span><span class="ans-sub">핵심 기능을 충분히 체험하기에 알맞은 시간임</span></label></div>
+                    <div class="option-item"><input type="radio" name="q3" id="q3_2" value="너무 짧음"><label for="q3_2"><span class="ans-main">너무 짧음</span><span class="ans-sub">자율주행의 특징을 느끼기에 시간이 부족함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q3" id="q3_3" value="너무 길음"><label for="q3_3"><span class="ans-main">너무 길음</span><span class="ans-sub">시간이 길어 다소 지루하거나 피로감을 느꼈음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q3" id="q3_4" value="기타"><label for="q3_4"><span class="ans-main">기타</span><span class="ans-sub">시간은 적당하나 도로 정체 등이 심했음</span></label></div>
                 </div>
-                <div class="option-item">
-                    <input type="radio" name="q4" id="q4_2" value="신호 표시 개선 필요">
-                    <label for="q4_2">
-                        <span class="ans-main">신호 표시 개선</span>
-                        <span class="ans-sub">신호 전환 시 일시적인 오류나 혼동이 있었음</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q4" id="q4_3" value="객체 인식 정확도 개선 필요">
-                    <label for="q4_3">
-                        <span class="ans-main">객체 인식 개선</span>
-                        <span class="ans-sub">주변 오토바이, 차량 등을 잘못 인식할 때가 있음</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q4" id="q4_4" value="주행 주체 표시 개선 필요">
-                    <label for="q4_4">
-                        <span class="ans-main">주행 주체 표시 개선</span>
-                        <span class="ans-sub">자율/수동 제어권 전환 안내가 명확하지 않음</span>
-                    </label>
+                <div class="btn-group">
+                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(2)">이전</button>
+                    <button type="button" class="next-btn nav-btn" onclick="nextStep(4)">다음</button>
                 </div>
             </div>
-            <div class="btn-group">
-                <button type="button" class="prev-btn nav-btn" onclick="prevStep(3)">이전</button>
-                <button type="button" class="next-btn nav-btn" onclick="nextStep(5)">다음</button>
-            </div>
-        </div>
 
-        <div class="step" id="step5">
-            <div class="question-title">5. 유턴(U-Turn) 시 차량의 조향 능력과 회전반경 제어에 대한 느낌은 어떠하셨습니까?</div>
-            <div class="options-list">
-                <div class="option-item">
-                    <input type="radio" name="q5" id="q5_1" value="매우 자연스러움" required>
-                    <label for="q5_1">
-                        <span class="ans-main">매우 자연스러움</span>
-                        <span class="ans-sub">후진 없이 매끄럽게 한 번에 회전하여 만족함</span>
-                    </label>
+            <div class="step" id="step4">
+                <div class="question-title">4. 차량 내부 디스플레이 정보 중 가장 개선이 필요한 부분은 무엇입니까?</div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="q4" id="q4_1" value="전반적으로 만족함" required><label for="q4_1"><span class="ans-main">전반적으로 만족함</span><span class="ans-sub">화면을 통해 차량의 판단을 잘 이해할 수 있었음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q4" id="q4_2" value="신호 표시 개선 필요"><label for="q4_2"><span class="ans-main">신호 표시 개선</span><span class="ans-sub">신호 전환 시 일시적인 오류나 혼동이 있었음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q4" id="q4_3" value="객체 인식 정확도 개선 필요"><label for="q4_3"><span class="ans-main">객체 인식 개선</span><span class="ans-sub">주변 오토바이, 차량 등을 잘못 인식할 때가 있음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q4" id="q4_4" value="주행 주체 표시 개선 필요"><label for="q4_4"><span class="ans-main">주행 주체 표시 개선</span><span class="ans-sub">자율/수동 제어권 전환 안내가 명확하지 않음</span></label></div>
                 </div>
-                <div class="option-item">
-                    <input type="radio" name="q5" id="q5_2" value="보통">
-                    <label for="q5_2">
-                        <span class="ans-main">보통</span>
-                        <span class="ans-sub">약간 불안했으나 안전하게 경로를 복귀함</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q5" id="q5_3" value="개선 필요">
-                    <label for="q5_3">
-                        <span class="ans-main">개선 필요</span>
-                        <span class="ans-sub">회전반경 부족으로 후진 재진행 시 불안함</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q5" id="q5_4" value="의견 없음">
-                    <label for="q5_4">
-                        <span class="ans-main">의견 없음</span>
-                        <span class="ans-sub">코스 중 유턴 구간이 없었거나 기억나지 않음</span>
-                    </label>
+                <div class="btn-group">
+                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(3)">이전</button>
+                    <button type="button" class="next-btn nav-btn" onclick="nextStep(5)">다음</button>
                 </div>
             </div>
-            <div class="btn-group">
-                <button type="button" class="prev-btn nav-btn" onclick="prevStep(4)">이전</button>
-                <button type="button" class="next-btn nav-btn" onclick="nextStep(6)">다음</button>
-            </div>
-        </div>
 
-        <div class="step" id="step6">
-            <div class="question-title">6. 주행 중 승객이 느낀 '가감속 및 조향 승차감'은 어떠하셨습니까?</div>
-            <div class="options-list">
-                <div class="option-item">
-                    <input type="radio" name="q6" id="q6_1" value="매우 우수함" required>
-                    <label for="q6_1">
-                        <span class="ans-main">매우 우수함</span>
-                        <span class="ans-sub">일반 택시보다 더 부드럽고 편안한 느낌임</span>
-                    </label>
+            <div class="step" id="step5">
+                <div class="question-title">5. 유턴(U-Turn) 시 차량의 조향 능력과 회전반경 제어에 대한 느낌은 어떠하셨습니까?</div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="q5" id="q5_1" value="매우 자연스러움" required><label for="q5_1"><span class="ans-main">매우 자연스러움</span><span class="ans-sub">후진 없이 매끄럽게 한 번에 회전하여 만족함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_2" value="보통"><label for="q5_2"><span class="ans-main">보통</span><span class="ans-sub">약간 불안했으나 안전하게 경로를 복귀함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_3" value="개선 필요"><label for="q5_3"><span class="ans-main">개선 필요</span><span class="ans-sub">회전반경 부족으로 후진 재진행 시 불안함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_4" value="의견 없음"><label for="q5_4"><span class="ans-main">의견 없음</span><span class="ans-sub">코스 중 유턴 구간이 없었거나 기억나지 않음</span></label></div>
                 </div>
-                <div class="option-item">
-                    <input type="radio" name="q6" id="q6_2" value="보통">
-                    <label for="q6_2">
-                        <span class="ans-main">보통</span>
-                        <span class="ans-sub">일반적인 차량 운행 수준과 비슷함</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q6" id="q6_3" value="개선 필요">
-                    <label for="q6_3">
-                        <span class="ans-main">개선 필요</span>
-                        <span class="ans-sub">조향이 다소 급하거나 울컥거리는 느낌이 있음</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q6" id="q6_4" value="매우 불편함">
-                    <label for="q6_4">
-                        <span class="ans-main">매우 불편함</span>
-                        <span class="ans-sub">잦은 급제동 등으로 멀미나 피로감을 느낌</span>
-                    </label>
+                <div class="btn-group">
+                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(4)">이전</button>
+                    <button type="button" class="next-btn nav-btn" onclick="nextStep(6)">다음</button>
                 </div>
             </div>
-            <div class="btn-group">
-                <button type="button" class="prev-btn nav-btn" onclick="prevStep(5)">이전</button>
-                <button type="button" class="next-btn nav-btn" onclick="nextStep(7)">다음</button>
-            </div>
-        </div>
 
-        <div class="step" id="step7">
-            <div class="question-title">7. 탑승 전 진행된 '사전 브리핑'이 차량을 이해하는 데 도움이 되었습니까?</div>
-            <div class="options-list">
-                <div class="option-item">
-                    <input type="radio" name="q7" id="q7_1" value="매우 큰 도움이 됨" required>
-                    <label for="q7_1">
-                        <span class="ans-main">매우 큰 도움</span>
-                        <span class="ans-sub">운행 방식을 미리 알아 안심하고 탑승했음</span>
-                    </label>
+            <div class="step" id="step6">
+                <div class="question-title">6. 주행 중 승객이 느낀 '가감속 및 조향 승차감'은 어떠하셨습니까?</div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="q6" id="q6_1" value="매우 우수함" required><label for="q6_1"><span class="ans-main">매우 우수함</span><span class="ans-sub">일반 택시보다 더 부드럽고 편안한 느낌임</span></label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_2" value="보통"><label for="q6_2"><span class="ans-main">보통</span><span class="ans-sub">일반적인 차량 운행 수준과 비슷함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_3" value="개선 필요"><label for="q6_3"><span class="ans-main">개선 필요</span><span class="ans-sub">조향이 다소 급하거나 울컥거리는 느낌이 있음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_4" value="매우 불편함"><label for="q6_4"><span class="ans-main">매우 불편함</span><span class="ans-sub">잦은 급제동 등으로 멀미나 피로감을 느낌</span></label></div>
                 </div>
-                <div class="option-item">
-                    <input type="radio" name="q7" id="q7_2" value="어느 정도 도움이 됨">
-                    <label for="q7_2">
-                        <span class="ans-main">어느 정도 도움</span>
-                        <span class="ans-sub">기본적인 주행 특성을 이해하는 데 유익했음</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q7" id="q7_3" value="별로 도움이 안 됨">
-                    <label for="q7_3">
-                        <span class="ans-main">도움 안 됨</span>
-                        <span class="ans-sub">안내가 부족했거나 실제 탑승과 차이가 있었음</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q7" id="q7_4" value="브리핑을 받지 못함">
-                    <label for="q7_4">
-                        <span class="ans-main">받지 못함</span>
-                        <span class="ans-sub">사전 안내 절차 없이 바로 탑승함</span>
-                    </label>
+                <div class="btn-group">
+                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(5)">이전</button>
+                    <button type="button" class="next-btn nav-btn" onclick="nextStep(7)">다음</button>
                 </div>
             </div>
-            <div class="btn-group">
-                <button type="button" class="prev-btn nav-btn" onclick="prevStep(6)">이전</button>
-                <button type="button" class="next-btn nav-btn" onclick="nextStep(8)">다음</button>
-            </div>
-        </div>
 
-        <div class="step" id="step8">
-            <div class="question-title">8. 탑승 중 제공된 '실시간 음성 및 화면 안내'에 대해 어떻게 생각하십니까?</div>
-            <div class="options-list">
-                <div class="option-item">
-                    <input type="radio" name="q8" id="q8_1" value="매우 만족" required>
-                    <label for="q8_1">
-                        <span class="ans-main">매우 만족</span>
-                        <span class="ans-sub">실시간 안내 덕분에 차량 판단을 신뢰하게 됨</span>
-                    </label>
+            <div class="step" id="step7">
+                <div class="question-title">7. 탑승 전 진행된 '사전 브리핑'이 차량을 이해하는 데 도움이 되었습니까?</div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="q7" id="q7_1" value="매우 큰 도움이 됨" required><label for="q7_1"><span class="ans-main">매우 큰 도움</span><span class="ans-sub">운행 방식을 미리 알아 안심하고 탑승했음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_2" value="어느 정도 도움이 됨"><label for="q7_2"><span class="ans-main">어느 정도 도움</span><span class="ans-sub">기본적인 주행 특성을 이해하는 데 유익했음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_3" value="별로 도움이 안 됨"><label for="q7_3"><span class="ans-main">도움 안 됨</span><span class="ans-sub">안내가 부족했거나 실제 탑승과 차이가 있었음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_4" value="브리핑을 받지 못함"><label for="q7_4"><span class="ans-main">받지 못함</span><span class="ans-sub">사전 안내 절차 없이 바로 탑승함</span></label></div>
                 </div>
-                <div class="option-item">
-                    <input type="radio" name="q8" id="q8_2" value="안내 강화 필요">
-                    <label for="q8_2">
-                        <span class="ans-main">안내 강화 필요</span>
-                        <span class="ans-sub">상황 발생 시 이유가 더 자세히 안내되면 좋겠음</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q8" id="q8_3" value="안내가 과도함">
-                    <label for="q8_3">
-                        <span class="ans-main">안내가 과도함</span>
-                        <span class="ans-sub">잦은 알림이 오히려 집중을 방해하거나 불안함</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q8" id="q8_4" value="안내를 인지하지 못함">
-                    <label for="q8_4">
-                        <span class="ans-main">인지하지 못함</span>
-                        <span class="ans-sub">안내 멘트나 메시지가 있었는지 잘 모르겠음</span>
-                    </label>
+                <div class="btn-group">
+                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(6)">이전</button>
+                    <button type="button" class="next-btn nav-btn" onclick="nextStep(8)">다음</button>
                 </div>
             </div>
-            <div class="btn-group">
-                <button type="button" class="prev-btn nav-btn" onclick="prevStep(7)">이전</button>
-                <button type="button" class="next-btn nav-btn" onclick="nextStep(9)">다음</button>
-            </div>
-        </div>
 
-        <div class="step" id="step9">
-            <div class="question-title">9. 향후 상용화될 '자율주행 대중교통 서비스'를 이용할 의향이 있으십니까?</div>
-            <div class="options-list">
-                <div class="option-item">
-                    <input type="radio" name="q9" id="q9_1" value="적극 이용함" required>
-                    <label for="q9_1">
-                        <span class="ans-main">적극 이용</span>
-                        <span class="ans-sub">출시되면 바로 대중교통으로 활용할 것임</span>
-                    </label>
+            <div class="step" id="step8">
+                <div class="question-title">8. 탑승 중 제공된 '실시간 음성 및 화면 안내'에 대해 어떻게 생각하십니까?</div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="q8" id="q8_1" value="매우 만족" required><label for="q8_1"><span class="ans-main">매우 만족</span><span class="ans-sub">실시간 안내 덕분에 차량 판단을 신뢰하게 됨</span></label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_2" value="안내 강화 필요"><label for="q8_2"><span class="ans-main">안내 강화 필요</span><span class="ans-sub">상황 발생 시 이유가 더 자세히 안내되면 좋겠음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_3" value="안내가 과도함"><label for="q8_3"><span class="ans-main">안내가 과도함</span><span class="ans-sub">잦은 알림이 오히려 집중을 방해하거나 불안함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_4" value="안내를 인지하지 못함"><label for="q8_4"><span class="ans-main">인지하지 못함</span><span class="ans-sub">안내 멘트나 메시지가 있었는지 잘 모르겠음</span></label></div>
                 </div>
-                <div class="option-item">
-                    <input type="radio" name="q9" id="q9_2" value="조건부 이용함">
-                    <label for="q9_2">
-                        <span class="ans-main">조건부 이용</span>
-                        <span class="ans-sub">가격 경쟁력이나 노선이 적절하면 이용하겠음</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q9" id="q9_3" value="이용하지 않음">
-                    <label for="q9_3">
-                        <span class="ans-main">이용 안 함</span>
-                        <span class="ans-sub">여전히 사람이 운전하는 차가 더 안심됨</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q9" id="q9_4" value="잘 모르겠음">
-                    <label for="q9_4">
-                        <span class="ans-main">잘 모르겠음</span>
-                        <span class="ans-sub">기술이 더 발전한 후에 다시 고민해 보겠음</span>
-                    </label>
+                <div class="btn-group">
+                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(7)">이전</button>
+                    <button type="button" class="next-btn nav-btn" onclick="nextStep(9)">다음</button>
                 </div>
             </div>
-            <div class="btn-group">
-                <button type="button" class="prev-btn nav-btn" onclick="prevStep(8)">이전</button>
-                <button type="button" class="next-btn nav-btn" onclick="nextStep(10)">다음</button>
-            </div>
-        </div>
 
-        <div class="step" id="step10">
-            <div class="question-title">10. 성공적인 서비스 확대를 위해 가장 보완되어야 할 분야는 무엇입니까?</div>
-            <div class="options-list">
-                <div class="option-item">
-                    <input type="radio" name="q10" id="q10_1" value="기술적 알고리즘 개선" required>
-                    <label for="q10_1">
-                        <span class="ans-main">기술적 알고리즘 개선</span>
-                        <span class="ans-sub">우회전 합류 등 답답함 해소 및 판단 고도화</span>
-                    </label>
+            <div class="step" id="step9">
+                <div class="question-title">9. 향후 상용화될 '자율주행 대중교통 서비스'를 이용할 의향이 있으십니까?</div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="q9" id="q9_1" value="적극 이용함" required><label for="q9_1"><span class="ans-main">적극 이용</span><span class="ans-sub">출시되면 바로 대중교통으로 활용할 것임</span></label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_2" value="조건부 이용함"><label for="q9_2"><span class="ans-main">조건부 이용</span><span class="ans-sub">가격 경쟁력이나 노선이 적절하면 이용하겠음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_3" value="이용하지 않음"><label for="q9_3"><span class="ans-main">이용 안 함</span><span class="ans-sub">여전히 사람이 운전하는 차가 더 안심됨</span></label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_4" value="잘 모르겠음"><label for="q9_4"><span class="ans-main">잘 모르겠음</span><span class="ans-sub">기술이 더 발전한 후에 다시 고민해 보겠음</span></label></div>
                 </div>
-                <div class="option-item">
-                    <input type="radio" name="q10" id="q10_2" value="차량 제어 및 승차감 보완">
-                    <label for="q10_2">
-                        <span class="ans-main">승차감 보완</span>
-                        <span class="ans-sub">급감속·급조향 완화 및 부드러운 주행 구현</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q10" id="q10_3" value="승객 소통 채널 강화">
-                    <label for="q10_3">
-                        <span class="ans-main">승객 소통 강화</span>
-                        <span class="ans-sub">화면 인식 정확도 및 실시간 상황 설명 안내 보완</span>
-                    </label>
-                </div>
-                <div class="option-item">
-                    <input type="radio" name="q10" id="q10_4" value="안전 인프라 및 법제도 정비">
-                    <label for="q10_4">
-                        <span class="ans-main">안전 인프라 정비</span>
-                        <span class="ans-sub">보호구역 주행 안정성 및 법적 보상 체계 마련</span>
-                    </label>
+                <div class="btn-group">
+                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(8)">이전</button>
+                    <button type="button" class="next-btn nav-btn" onclick="nextStep(10)">다음</button>
                 </div>
             </div>
-            <div class="btn-group">
-                <button type="button" class="prev-btn nav-btn" onclick="prevStep(9)">이전</button>
-                <button type="button" id="submitBtn" class="submit-btn nav-btn" onclick="submitSurvey()">제출하기</button>
-            </div>
-        </div>
 
-    </form>
+            <div class="step" id="step10">
+                <div class="question-title">10. 성공적인 서비스 확대를 위해 가장 보완되어야 할 분야는 무엇입니까?</div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="q10" id="q10_1" value="기술적 알고리즘 개선" required><label for="q10_1"><span class="ans-main">기술적 알고리즘 개선</span><span class="ans-sub">우회전 합류 등 답답함 해소 및 판단 고도화</span></label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_2" value="차량 제어 및 승차감 보완"><label for="q10_2"><span class="ans-main">승차감 보완</span><span class="ans-sub">급감속·급조향 완화 및 부드러운 주행 구현</span></label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_3" value="승객 소통 채널 강화"><label for="q10_3"><span class="ans-main">승객 소통 강화</span><span class="ans-sub">화면 인식 정확도 및 실시간 상황 설명 안내 보완</span></label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_4" value="안전 인프라 및 법제도 정비"><label for="q10_4"><span class="ans-main">안전 인프라 정비</span><span class="ans-sub">보호구역 주행 안정성 및 법적 보상 체계 마련</span></label></div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(9)">이전</button>
+                    <button type="button" id="submitBtn" class="submit-btn nav-btn" onclick="submitSurvey()">제출하기</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div class="modal-overlay" id="successModal">
@@ -495,12 +255,35 @@
     let currentStep = 0;
     const totalQuestions = 10;
 
+    // 이미지 경로 매핑 (0번은 올려주신 이미지, 1~10번은 자율주행 관련 매칭 이미지)
+    const images = [
+        "image.png", // 시작화면: GitHub에 올리신 로고/회사 이미지
+        "http://googleusercontent.com/image_collection/image_retrieval/2459628679864763312", // Q1 안정성 (자율주행 주행뷰)
+        "http://googleusercontent.com/image_collection/image_retrieval/3389964108802860169", // Q2 돌발상황 (센서 라이다 맵)
+        "http://googleusercontent.com/image_collection/image_retrieval/16436108566552040686", // Q3 주행코스 (도심 도로 그래픽)
+        "http://googleusercontent.com/image_collection/image_retrieval/13141053502842046121", // Q4 디스플레이 (차량 인포테인먼트 화면)
+        "http://googleusercontent.com/image_collection/image_retrieval/8465559793116705264",  // Q5 유턴 (조향 핸들 제어)
+        "http://googleusercontent.com/image_collection/image_retrieval/15920312737266526803", // Q6 승차감 (안정적인 실내 탑승 전경)
+        "http://googleusercontent.com/image_collection/image_retrieval/3741523699117084016",  // Q7 사전브리핑 (가이드 패드 화면)
+        "http://googleusercontent.com/image_collection/image_retrieval/11593747768146567761", // Q8 음성안내 (스마트 커넥티드 그래픽)
+        "http://googleusercontent.com/image_collection/image_retrieval/14229820167265840050", // Q9 이용의향 (미래형 자율주행 셔틀)
+        "http://googleusercontent.com/image_collection/image_retrieval/8245988285067695450"   // Q10 서비스 확대 (스마트시티 네트워크)
+    ];
+
     function updateProgressBar(step) {
         const container = document.getElementById('progressContainer');
         const bar = document.getElementById('progressBar');
         const text = document.getElementById('progressText');
         const title = document.getElementById('mainTitle');
+        const img = document.getElementById('currentImg');
         
+        // 이미지 자연스럽게 교체
+        img.style.opacity = 0;
+        setTimeout(() => {
+            img.src = images[step];
+            img.style.opacity = 1;
+        }, 150);
+
         if (step === 0) {
             container.style.display = 'none';
             text.style.display = 'none';
@@ -520,11 +303,7 @@
             const currentInputs = document.querySelectorAll(`#step${currentStep} input[type="radio"]`);
             let isChecked = false;
             currentInputs.forEach(input => { if(input.checked) isChecked = true; });
-            
-            if(!isChecked) {
-                alert("답변을 선택해 주세요.");
-                return;
-            }
+            if(!isChecked) { alert("답변을 선택해 주세요."); return; }
         }
         document.getElementById(`step${currentStep}`).classList.remove('active');
         document.getElementById(`step${step}`).classList.add('active');
@@ -541,26 +320,18 @@
         window.scrollTo(0, 0);
     }
 
-    // 커스텀 모달 오픈 함수
-    function showModal() {
-        document.getElementById('successModal').classList.add('active');
-    }
-
-    // 커스텀 모달 클로즈 및 폼 리셋 함수
+    function showModal() { document.getElementById('successModal').classList.add('active'); }
+    
     function closeModal() {
         document.getElementById('successModal').classList.remove('active');
-        
-        // 폼 초기화 및 첫 페이지 회귀 조작
         const form = document.getElementById('surveyForm');
         form.reset();
         document.getElementById(`step${currentStep}`).classList.remove('active');
         document.getElementById('step0').classList.add('active');
         currentStep = 0;
         updateProgressBar(0);
-        
-        const submitBtn = document.getElementById('submitBtn');
-        submitBtn.disabled = false;
-        submitBtn.innerText = "제출하기";
+        document.getElementById('submitBtn').disabled = false;
+        document.getElementById('submitBtn').innerText = "제출하기";
     }
 
     function submitSurvey() {
@@ -568,17 +339,13 @@
         const currentInputs = document.querySelectorAll(`#step10 input[type="radio"]`);
         let isChecked = false;
         currentInputs.forEach(input => { if(input.checked) isChecked = true; });
-        if(!isChecked) {
-            alert("마지막 문항에 답변을 선택해 주세요.");
-            return;
-        }
+        if(!isChecked) { alert("마지막 문항에 답변을 선택해 주세요."); return; }
 
         const submitBtn = document.getElementById('submitBtn');
         submitBtn.disabled = true;
         submitBtn.innerText = "제출 중...";
 
         const scriptURL = 'https://script.google.com/macros/s/AKfycbx5RIRTCVqhq_WW_1rvMeJ7cJMk6vLyG1_KQPj1s-xVx4LIU0KCmaAXQHCV-gid2DY-/exec'; 
-        
         const formData = new FormData(form);
         const searchParams = new URLSearchParams();
         for (const pair of formData) { searchParams.append(pair[0], pair[1]); }
@@ -588,10 +355,7 @@
             body: searchParams,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
-        .then(response => {
-            // 구글 전송 완료 시, 기존 alert 창 대신 새롭게 구축한 커스텀 디자인 모달을 띄웁니다.
-            showModal();
-        })
+        .then(response => { showModal(); })
         .catch(error => {
             alert("전송 오류가 발생했습니다. 네트워크 상태를 확인해 주세요.");
             submitBtn.disabled = false;
@@ -601,3 +365,4 @@
 </script>
 </body>
 </html>
+```
