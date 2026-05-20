@@ -56,6 +56,20 @@
         .submit-btn { background: #38a169; color: #fff; }
         .nav-btn:active { transform: scale(0.98); }
 
+        /* ✨ 세련된 커스텀 알림창(모달) 스타일 구조 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        
+        .modal-box { background: #fff; width: 85%; max-width: 340px; padding: 30px 24px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transform: translateY(20px); transition: all 0.3s ease; }
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+        
+        /* 모달 내부 체크 마크 아이콘 디자인 */
+        .modal-icon { width: 56px; height: 56px; background: #e6f4ea; color: #34a853; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; font-weight: bold; margin: 0 auto 18px auto; }
+        .modal-title { font-size: 18px; font-weight: bold; color: #202124; margin-bottom: 10px; }
+        .modal-desc { font-size: 14px; color: #5f6368; line-height: 1.5; margin-bottom: 24px; word-break: keep-all; }
+        .modal-btn { width: 100%; padding: 14px; background: #3182ce; color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        .modal-btn:hover { background: #2b6cb0; }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
@@ -468,6 +482,15 @@
     </form>
 </div>
 
+<div class="modal-overlay" id="successModal">
+    <div class="modal-box">
+        <div class="modal-icon">✓</div>
+        <div class="modal-title">제출 완료</div>
+        <div class="modal-desc">소중한 의견 감사드립니다.<br>데이터가 안전하게 저장되었습니다.</div>
+        <button type="button" class="modal-btn" onclick="closeModal()">확인</button>
+    </div>
+</div>
+
 <script>
     let currentStep = 0;
     const totalQuestions = 10;
@@ -485,7 +508,7 @@
         } else {
             container.style.display = 'block';
             text.style.display = 'block';
-            title.style.display = 'none'; // 질문 중에는 진행률을 위해 타이틀 숨김(선택사항)
+            title.style.display = 'none';
             const percent = (step / totalQuestions) * 100;
             bar.style.width = percent + '%';
             text.innerText = step + ' / ' + totalQuestions;
@@ -518,6 +541,28 @@
         window.scrollTo(0, 0);
     }
 
+    // 커스텀 모달 오픈 함수
+    function showModal() {
+        document.getElementById('successModal').classList.add('active');
+    }
+
+    // 커스텀 모달 클로즈 및 폼 리셋 함수
+    function closeModal() {
+        document.getElementById('successModal').classList.remove('active');
+        
+        // 폼 초기화 및 첫 페이지 회귀 조작
+        const form = document.getElementById('surveyForm');
+        form.reset();
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        document.getElementById('step0').classList.add('active');
+        currentStep = 0;
+        updateProgressBar(0);
+        
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = false;
+        submitBtn.innerText = "제출하기";
+    }
+
     function submitSurvey() {
         const form = document.getElementById('surveyForm');
         const currentInputs = document.querySelectorAll(`#step10 input[type="radio"]`);
@@ -532,7 +577,6 @@
         submitBtn.disabled = true;
         submitBtn.innerText = "제출 중...";
 
-        // ⚠️ [필독] 구글 앱스 스크립트 웹앱 URL을 아래에 반드시 입력하세요!
         const scriptURL = 'https://script.google.com/macros/s/AKfycbx5RIRTCVqhq_WW_1rvMeJ7cJMk6vLyG1_KQPj1s-xVx4LIU0KCmaAXQHCV-gid2DY-/exec'; 
         
         const formData = new FormData(form);
@@ -545,14 +589,8 @@
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
         .then(response => {
-            alert("소중한 의견 감사합니다. 제출이 완료되었습니다.");
-            form.reset();
-            document.getElementById(`step${currentStep}`).classList.remove('active');
-            document.getElementById('step0').classList.add('active');
-            currentStep = 0;
-            updateProgressBar(0);
-            submitBtn.disabled = false;
-            submitBtn.innerText = "제출하기";
+            // 구글 전송 완료 시, 기존 alert 창 대신 새롭게 구축한 커스텀 디자인 모달을 띄웁니다.
+            showModal();
         })
         .catch(error => {
             alert("전송 오류가 발생했습니다. 네트워크 상태를 확인해 주세요.");
