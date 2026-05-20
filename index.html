@@ -7,69 +7,229 @@
     <style>
         /* 기본 레이아웃 및 여백 초기화 */
         * { box-sizing: border-box; }
-        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f0f2f5; margin: 0; padding: 15px; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        body { 
+            font-family: 'Noto Sans KR', sans-serif; 
+            background-color: #f0f2f5; 
+            margin: 0; 
+            padding: 10px; 
+            color: #333; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+        }
         
-        /* 설문 카드 메인 구조 (테두리가 둥글고 넘치는 요소를 깔끔하게 제한) */
-        .survey-container { width: 100%; max-width: 450px; background: #fff; border-radius: 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
+        /* 설문 카드 메인 구조 (화면을 절대 벗어나지 않도록 세심한 너비 및 높이 조절) */
+        .survey-container { 
+            width: 100%; 
+            max-width: 430px; 
+            background: #fff; 
+            border-radius: 20px; 
+            box-shadow: 0 12px 35px rgba(0,0,0,0.1); 
+            overflow: hidden; 
+            position: relative; 
+            display: flex;
+            flex-direction: column;
+        }
         
-        /* 1. 헤더 이미지 공간 최적화 (모바일 비례 사이즈 조절) */
-        .header-image { width: 100%; height: 180px; overflow: hidden; position: relative; background-color: #fafafa; }
-        .header-image img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease; display: block; }
+        /* 1. 헤더 이미지 공간 최적화 (가로세로 비율 유지형으로 절대 화면 이탈 불가) */
+        .header-image { 
+            width: 100%; 
+            aspect-ratio: 16 / 9;
+            max-height: 200px;
+            overflow: hidden; 
+            position: relative; 
+            background-color: #eaecef; 
+        }
+        .header-image img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: opacity 0.3s ease; 
+            display: block; 
+        }
         
         /* 내부 내용 영역 패딩 */
-        .content-padding { padding: 25px; }
+        .content-padding { 
+            padding: 20px 25px 25px 25px; 
+        }
 
-        /* 2. 대제목 텍스트 흐름 개선 (우측 말줄임 점 3개 제거 및 한 줄 정렬 유지) */
-        h1 { font-size: 17px; text-align: center; color: #1a365d; margin: 0 0 5px 0; letter-spacing: -0.5px; word-break: keep-all; }
-        .subtitle { text-align: center; font-size: 12px; color: #718096; margin-bottom: 20px; font-weight: 500; }
+        /* 2. 대제목 및 소제목 정돈 */
+        h1 { 
+            font-size: 16px; 
+            text-align: center; 
+            color: #1a365d; 
+            margin: 0 0 5px 0; 
+            letter-spacing: -0.5px; 
+            word-break: keep-all; 
+            line-height: 1.3;
+        }
+        .subtitle { 
+            text-align: center; 
+            font-size: 12px; 
+            color: #718096; 
+            margin-bottom: 15px; 
+            font-weight: 500; 
+        }
         
         /* 진행률 표시선 */
-        .progress-container { background-color: #edf2f7; height: 4px; border-radius: 2px; margin-bottom: 20px; overflow: hidden; display: none; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, #3182ce, #63b3ed); width: 0%; transition: width 0.3s ease; }
-        .progress-text { text-align: right; font-size: 11px; color: #a0aec0; margin-top: 4px; display: none; margin-bottom: 10px; }
+        .progress-container { 
+            background-color: #edf2f7; 
+            height: 4px; 
+            border-radius: 2px; 
+            margin-bottom: 15px; 
+            overflow: hidden; 
+            display: none; 
+        }
+        .progress-bar { 
+            height: 100%; 
+            background: linear-gradient(90deg, #3182ce, #63b3ed); 
+            width: 0%; 
+            transition: width 0.3s ease; 
+        }
+        .progress-text { 
+            text-align: right; 
+            font-size: 11px; 
+            color: #a0aec0; 
+            margin-top: 4px; 
+            display: none; 
+            margin-bottom: 8px; 
+        }
 
         /* 스텝 제어 애니메이션 */
         .step { display: none; }
-        .step.active { display: block; animation: slideUp 0.5s ease; }
+        .step.active { display: block; animation: slideUp 0.4s ease; }
         
-        .intro-text { text-align: center; font-size: 14px; line-height: 1.7; color: #4a5568; margin-bottom: 20px; }
+        .intro-text { 
+            text-align: center; 
+            font-size: 13px; 
+            line-height: 1.6; 
+            color: #4a5568; 
+            margin-bottom: 20px; 
+            word-break: keep-all;
+        }
         
-        /* 질문 타이틀 가독성 증가 (줄바꿈이 잘리지 않고 무조건 다음 줄로 줄바꿈 처리) */
-        .question-title { font-size: 16px; font-weight: 700; color: #2d3748; margin-bottom: 20px; line-height: 1.5; word-break: keep-all; }
+        /* 질문 타이틀 (모바일 가독성 증대) */
+        .question-title { 
+            font-size: 15px; 
+            font-weight: 700; 
+            color: #2d3748; 
+            margin-bottom: 18px; 
+            line-height: 1.5; 
+            word-break: keep-all; 
+        }
         
         /* 선택지 레이아웃 */
         .options-list { list-style: none; padding: 0; margin: 0; }
-        .option-item { margin-bottom: 12px; }
+        .option-item { margin-bottom: 10px; }
         .option-item input[type="radio"] { display: none; }
-        .option-item label { display: block; padding: 14px 18px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
+        .option-item label { 
+            display: block; 
+            padding: 12px 16px; 
+            background: #f8fafc; 
+            border: 1.5px solid #e2e8f0; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+        }
         
-        .ans-main { display: block; font-size: 15px; font-weight: 600; color: #2d3748; margin-bottom: 4px; }
-        .ans-sub { display: block; font-size: 12px; color: #718096; font-weight: 400; line-height: 1.4; }
+        .ans-main { display: block; font-size: 14px; font-weight: 600; color: #2d3748; margin-bottom: 3px; }
+        .ans-sub { display: block; font-size: 11px; color: #718096; font-weight: 400; line-height: 1.3; }
         
         /* 라디오 버튼 체크 상태 스타일 */
         .option-item input[type="radio"]:checked + label { background: #ebf8ff; border-color: #3182ce; }
         .option-item input[type="radio"]:checked + label .ans-main { color: #2b6cb0; }
 
         /* 내비게이션 하단 이동 버튼군 */
-        .btn-group { display: flex; justify-content: space-between; gap: 10px; margin-top: 25px; }
-        .nav-btn { flex: 1; padding: 15px; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .btn-group { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
+        .nav-btn { flex: 1; padding: 13px; border: none; border-radius: 12px; font-size: 14px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
         .prev-btn { background: #f1f5f9; color: #64748b; }
         .next-btn, .start-btn { background: #3182ce; color: #fff; }
         .submit-btn { background: #38a169; color: #fff; }
         .nav-btn:active { transform: scale(0.97); }
 
-        /* 제출 완료 커스텀 알림 모달 */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s; }
+        /* ✨ 공통 모달 오버레이 스타일 */
+        .modal-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.5); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 2000; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: all 0.25s ease; 
+        }
         .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-box { background: #fff; width: 85%; max-width: 340px; padding: 35px 25px; border-radius: 24px; text-align: center; transform: scale(0.9); transition: 0.3s; }
+        
+        .modal-box { 
+            background: #fff; 
+            width: 85%; 
+            max-width: 320px; 
+            padding: 25px 20px; 
+            border-radius: 20px; 
+            text-align: center; 
+            transform: scale(0.9); 
+            transition: all 0.25s ease; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
         .modal-overlay.active .modal-box { transform: scale(1); }
-        .modal-icon { width: 60px; height: 60px; background: #e6f4ea; color: #34a853; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 30px; margin: 0 auto 20px; }
-        .modal-title { font-size: 19px; font-weight: bold; margin-bottom: 12px; }
-        .modal-desc { font-size: 14px; color: #5f6368; line-height: 1.6; margin-bottom: 25px; }
-        .modal-btn { width: 100%; padding: 15px; background: #3182ce; color: #fff; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; }
+        
+        /* 1) 제출 성공 모달 전용 아이콘 */
+        .modal-icon-success { 
+            width: 50px; 
+            height: 50px; 
+            background: #e6f4ea; 
+            color: #34a853; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 24px; 
+            margin: 0 auto 15px auto; 
+            font-weight: bold;
+        }
+
+        /* 2) ✨ 미선택 경고 모달 전용 아이콘 */
+        .modal-icon-warning { 
+            width: 50px; 
+            height: 50px; 
+            background: #fff3cd; 
+            color: #ffc107; 
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 24px; 
+            margin: 0 auto 15px auto; 
+            font-weight: bold;
+        }
+
+        .modal-title { font-size: 16px; font-weight: bold; color: #202124; margin-bottom: 8px; }
+        .modal-desc { font-size: 13px; color: #5f6368; line-height: 1.5; margin-bottom: 20px; word-break: keep-all; }
+        
+        .modal-btn { 
+            width: 100%; 
+            padding: 12px; 
+            background: #3182ce; 
+            color: #fff; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 14px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: background 0.2s; 
+        }
+        .modal-btn:hover { background: #2b6cb0; }
+        .modal-btn-warning { background: #4a5568; }
+        .modal-btn-warning:hover { background: #2d3748; }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -257,10 +417,20 @@
 <!-- 제출 성공 커스텀 모달 윈도우 -->
 <div class="modal-overlay" id="successModal">
     <div class="modal-box">
-        <div class="modal-icon">✓</div>
+        <div class="modal-icon-success">✓</div>
         <div class="modal-title">제출 완료</div>
         <div class="modal-desc">소중한 의견 감사드립니다.<br>데이터가 안전하게 저장되었습니다.</div>
         <button type="button" class="modal-btn" onclick="closeModal()">확인</button>
+    </div>
+</div>
+
+<!-- ✨ 미선택 방지 알림 커스텀 모달 윈도우 -->
+<div class="modal-overlay" id="warningModal">
+    <div class="modal-box">
+        <div class="modal-icon-warning">!</div>
+        <div class="modal-title" id="warningTitle">답변 미선택</div>
+        <div class="modal-desc" id="warningDesc">다음 문항으로 이동하려면 답변을 선택해 주세요.</div>
+        <button type="button" class="modal-btn modal-btn-warning" onclick="closeWarningModal()">확인</button>
     </div>
 </div>
 
@@ -268,19 +438,19 @@
     let currentStep = 0;
     const totalQuestions = 10;
 
-    // 단계별 이미지 소스 배열 (0번은 최초 업로드 이미지, 1~10번은 자율주행 관련 이미지)
+    // 단계별 고화질 자율주행 관련 Unsplash 이미지 주소 매핑 (안정적 렌더링 검증 완료)
     const images = [
         "image.png", // 시작 화면
-        "http://googleusercontent.com/image_collection/image_retrieval/2459628679864763312", // 1번 문항
-        "http://googleusercontent.com/image_collection/image_retrieval/3389964108802860169", // 2번 문항
-        "http://googleusercontent.com/image_collection/image_retrieval/16436108566552040686", // 3번 문항
-        "http://googleusercontent.com/image_collection/image_retrieval/13141053502842046121", // 4번 문항
-        "http://googleusercontent.com/image_collection/image_retrieval/8465559793116705264",  // 5번 문항
-        "http://googleusercontent.com/image_collection/image_retrieval/15920312737266526803", // 6번 문항
-        "http://googleusercontent.com/image_collection/image_retrieval/3741523699117084016",  // 7번 문항
-        "http://googleusercontent.com/image_collection/image_retrieval/11593747768146567761", // 8번 문항
-        "http://googleusercontent.com/image_collection/image_retrieval/14229820167265840050", // 9번 문항
-        "http://googleusercontent.com/image_collection/image_retrieval/8245988285067695450"   // 10번 문항
+        "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=600&q=80", // 1번 문항 (안정적 야간 도심 주행)
+        "https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=600&q=80", // 2번 문항 (테크놀로지 센서 패턴)
+        "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=600&q=80", // 3번 문항 (도심 빌딩숲 교차로)
+        "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80", // 4번 문항 (차량 내부 인포테인먼트 계기판)
+        "https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80", // 5번 문항 (정교한 기어 컨트롤 및 핸들)
+        "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80", // 6번 문항 (부드러운 승용차 주행감)
+        "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80", // 7번 문항 (사전 브리핑/미팅 오피스 느낌)
+        "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80", // 8번 문항 (실시간 디바이스 연결 피드백)
+        "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80", // 9번 문항 (스마트 교통 인프라 버스/정류장)
+        "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=600&q=80"  // 10번 문항 (미래형 스마트 미래도시 빌딩)
     ];
 
     function updateProgressBar(step) {
@@ -311,12 +481,28 @@
         }
     }
 
+    // ✨ 경고용 모달 유틸리티 함수
+    function showWarningModal(title, message) {
+        document.getElementById('warningTitle').innerText = title;
+        document.getElementById('warningDesc').innerText = message;
+        document.getElementById('warningModal').classList.add('active');
+    }
+
+    function closeWarningModal() {
+        document.getElementById('warningModal').classList.remove('active');
+    }
+
     function nextStep(step) {
         if(currentStep > 0) {
             const currentInputs = document.querySelectorAll(`#step${currentStep} input[type="radio"]`);
             let isChecked = false;
             currentInputs.forEach(input => { if(input.checked) isChecked = true; });
-            if(!isChecked) { alert("답변을 선택해 주세요."); return; }
+            
+            // 기존 투박한 alert 창을 모던한 커스텀 경고창으로 전면 우회 변경
+            if(!isChecked) { 
+                showWarningModal("답변 선택 필요", "다음 문항으로 넘어가려면 답변을 선택해 주세요."); 
+                return; 
+            }
         }
         document.getElementById(`step${currentStep}`).classList.remove('active');
         document.getElementById(`step${step}`).classList.add('active');
@@ -352,7 +538,12 @@
         const currentInputs = document.querySelectorAll(`#step10 input[type="radio"]`);
         let isChecked = false;
         currentInputs.forEach(input => { if(input.checked) isChecked = true; });
-        if(!isChecked) { alert("마지막 문항에 답변을 선택해 주세요."); return; }
+        
+        // 제출 시 미선택 상태 예외 처리 역시 모던한 디자인으로 통일
+        if(!isChecked) { 
+            showWarningModal("답변 누락", "마지막 문항인 10번 질문에 답변을 선택해 주세요."); 
+            return; 
+        }
 
         const submitBtn = document.getElementById('submitBtn');
         submitBtn.disabled = true;
