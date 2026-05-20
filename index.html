@@ -32,19 +32,20 @@
             flex-direction: column;
         }
         
-        /* 1. 헤더 이미지 공간 최적화 (가로세로 비율 유지형으로 절대 화면 이탈 불가) */
+        /* 1. 헤더 이미지 영역 (시작 화면에서만 표시되도록 제어) */
         .header-image { 
             width: 100%; 
-            aspect-ratio: 16 / 9;
-            max-height: 200px;
+            height: 140px; /* 위아래가 잘리지 않도록 크기를 슬림하게 조정 */
             overflow: hidden; 
             position: relative; 
             background-color: #eaecef; 
+            display: block;
         }
         .header-image img { 
             width: 100%; 
             height: 100%; 
-            object-fit: cover; 
+            object-fit: contain; /* 이미지 전체가 찌그러지거나 잘리지 않고 온전히 나오도록 조절 */
+            background-color: #fff; /* 배경색을 흰색으로 처리하여 로고가 부각되게 설정 */
             transition: opacity 0.3s ease; 
             display: block; 
         }
@@ -109,6 +110,22 @@
             word-break: keep-all;
         }
         
+        /* 소요 시간 별도 문단 배치 */
+        .time-badge {
+            display: block;
+            text-align: center;
+            font-size: 11px;
+            color: #718096;
+            margin-top: 15px;
+            font-weight: bold;
+            background-color: #f7fafc;
+            padding: 6px 12px;
+            border-radius: 20px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
         /* 질문 타이틀 (모바일 가독성 증대) */
         .question-title { 
             font-size: 15px; 
@@ -148,7 +165,7 @@
         .submit-btn { background: #38a169; color: #fff; }
         .nav-btn:active { transform: scale(0.97); }
 
-        /* ✨ 공통 모달 오버레이 스타일 */
+        /* 공통 모달 오버레이 스타일 */
         .modal-overlay { 
             position: fixed; 
             top: 0; 
@@ -194,7 +211,7 @@
             font-weight: bold;
         }
 
-        /* 2) ✨ 미선택 경고 모달 전용 아이콘 */
+        /* 2) 미선택 경고 모달 전용 아이콘 */
         .modal-icon-warning { 
             width: 50px; 
             height: 50px; 
@@ -238,7 +255,8 @@
 
 <div class="survey-container">
     <div class="header-image" id="headerImage">
-        <img id="currentImg" src="image.png" alt="설문지 상단 이미지">
+        <!-- 첫 로딩 화면에서 로고 이미지(image.png)를 표시합니다. 문항 이동 시 헤더 높이를 숨기기 위해 ID를 부여합니다. -->
+        <img id="currentImg" src="image.png" alt="설문지 상단 로고">
     </div>
 
     <div class="content-padding">
@@ -254,7 +272,8 @@
                 <div class="subtitle">퓨처링크 시승 프로젝트</div>
                 <div class="intro-text">
                     자율주행 시승을 경험해 주셔서 감사합니다.<br><br>
-                    고객님의 피드백은 기술 고도화의 핵심 자료가 됩니다. (약 2분 소요)
+                    고객님의 피드백은 기술 고도화의 핵심 자료가 됩니다.
+                    <span class="time-badge">⏱ 약 2분 소요</span>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="start-btn nav-btn" onclick="nextStep(1)">시작하기</button>
@@ -438,40 +457,22 @@
     let currentStep = 0;
     const totalQuestions = 10;
 
-    // 단계별 고화질 자율주행 관련 Unsplash 이미지 주소 매핑 (안정적 렌더링 검증 완료)
-    const images = [
-        "image.png", // 시작 화면
-        "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=600&q=80", // 1번 문항 (안정적 야간 도심 주행)
-        "https://images.unsplash.com/photo-1508974239320-0a029497e820?auto=format&fit=crop&w=600&q=80", // 2번 문항 (테크놀로지 센서 패턴)
-        "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=600&q=80", // 3번 문항 (도심 빌딩숲 교차로)
-        "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80", // 4번 문항 (차량 내부 인포테인먼트 계기판)
-        "https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80", // 5번 문항 (정교한 기어 컨트롤 및 핸들)
-        "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80", // 6번 문항 (부드러운 승용차 주행감)
-        "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80", // 7번 문항 (사전 브리핑/미팅 오피스 느낌)
-        "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80", // 8번 문항 (실시간 디바이스 연결 피드백)
-        "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80", // 9번 문항 (스마트 교통 인프라 버스/정류장)
-        "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=600&q=80"  // 10번 문항 (미래형 스마트 미래도시 빌딩)
-    ];
-
     function updateProgressBar(step) {
         const container = document.getElementById('progressContainer');
         const bar = document.getElementById('progressBar');
         const text = document.getElementById('progressText');
         const title = document.getElementById('mainTitle');
-        const img = document.getElementById('currentImg');
+        const imgContainer = document.getElementById('headerImage');
         
-        // 이미지 부드러운 디졸브 전환
-        img.style.opacity = 0;
-        setTimeout(() => {
-            img.src = images[step];
-            img.style.opacity = 1;
-        }, 150);
-
         if (step === 0) {
+            // 시작 화면: 회사 로고 이미지 영역을 보여줌
+            imgContainer.style.display = 'block';
             container.style.display = 'none';
             text.style.display = 'none';
             title.style.display = 'block';
         } else {
+            // 설문 문항 중: 항목별 이미지를 제거하기로 하였으므로, 헤더 이미지 영역 자체를 숨겨서 완전한 밀착 카드로 연출
+            imgContainer.style.display = 'none';
             container.style.display = 'block';
             text.style.display = 'block';
             title.style.display = 'none';
@@ -498,7 +499,6 @@
             let isChecked = false;
             currentInputs.forEach(input => { if(input.checked) isChecked = true; });
             
-            // 기존 투박한 alert 창을 모던한 커스텀 경고창으로 전면 우회 변경
             if(!isChecked) { 
                 showWarningModal("답변 선택 필요", "다음 문항으로 넘어가려면 답변을 선택해 주세요."); 
                 return; 
@@ -539,7 +539,6 @@
         let isChecked = false;
         currentInputs.forEach(input => { if(input.checked) isChecked = true; });
         
-        // 제출 시 미선택 상태 예외 처리 역시 모던한 디자인으로 통일
         if(!isChecked) { 
             showWarningModal("답변 누락", "마지막 문항인 10번 질문에 답변을 선택해 주세요."); 
             return; 
