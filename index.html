@@ -19,7 +19,7 @@
             min-height: 100vh; 
         }
         
-        /* 설문 카드 메인 구조 (화면을 절대 벗어나지 않도록 세심한 너비 및 높이 조절) */
+        /* 설문 카드 메인 구조 */
         .survey-container { 
             width: 100%; 
             max-width: 430px; 
@@ -39,14 +39,17 @@
             max-height: 180px; /* 모바일에서 위아래로 길어지지 않게 최대 높이 제한 */
             overflow: hidden; 
             position: relative; 
-            background-color: #eaecef; 
+            background-color: #fff; /* 시작화면 기본 흰색 배경 */
             display: block;
         }
         .header-image img { 
             width: 100%; 
             height: 100%; 
+            object-fit: contain; /* 시작화면 기본: 비율 유지 및 안 잘리게 */
+            padding: 15px 20px;  /* 시작화면 기본: 사방 여백 */
             transition: opacity 0.3s ease; 
             display: block; 
+            background-color: #fff;
         }
         
         /* 내부 내용 영역 패딩 */
@@ -254,7 +257,7 @@
 
 <div class="survey-container">
     <div class="header-image" id="headerImage">
-        <!-- 각 질문별로 이미지가 자연스럽게 로드되는 중앙 제어형 이미지 태그 -->
+        <!-- 첫 로딩 화면에서 로고 이미지(image.png)를 표시합니다. -->
         <img id="currentImg" src="image.png" alt="설문지 상단 이미지">
     </div>
 
@@ -300,9 +303,9 @@
                 <div class="question-title">2. 장애물 및 돌발 상황에서의 '안전 중심 보수적 대응'에 대해 어떻게 생각하십니까?</div>
                 <div class="options-list">
                     <div class="option-item"><input type="radio" name="q2" id="q2_1" value="매우 만족" required><label for="q2_1"><span class="ans-main">매우 만족</span><span class="ans-sub">안전을 최우선으로 하여 매우 든든했음</span></label></div>
-                    <div class="option-item"><input type="radio" name="q2" id="q2_2" value="만족"><label for="q2_2"><span class="ans-main">보통</span><span class="ans-sub">안전하긴 했으나, 간혹 지나치게 방어적이라 답답함</span></label></div>
-                    <div class="option-item"><input type="radio" name="q2" id="q2_3" value="보통"><label for="q2_3"><span class="ans-main">불만족</span><span class="ans-sub">지나친 대기로 인해 주행 답답함이 컸음</span></label></div>
-                    <div class="option-item"><input type="radio" name="q2" id="q2_4" value="불만족"><label for="q2_4"><span class="ans-main">잘 모르겠음</span><span class="ans-sub">해당 상황을 명확히 경험하지 못함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_2" value="만족"><label for="q2_2"><span class="ans-main">만족</span><span class="ans-sub">안전하긴 했으나, 간혹 지나치게 방어적이라 답답함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_3" value="보통"><label for="q2_3"><span class="ans-main">보통</span><span class="ans-sub">지나친 대기로 인해 주행 답답함이 컸음</span></label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_4" value="불만족"><label for="q2_4"><span class="ans-main">불만족</span><span class="ans-sub">해당 상황을 명확히 경험하지 못함</span></label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(1)">이전</button>
@@ -345,7 +348,7 @@
                 <div class="question-title">5. 유턴(U-Turn) 시 차량의 조향 능력과 회전반경 제어에 대한 느낌은 어떠하셨습니까?</div>
                 <div class="options-list">
                     <div class="option-item"><input type="radio" name="q5" id="q5_1" value="매우 자연스러움" required><label for="q5_1"><span class="ans-main">매우 자연스러움</span><span class="ans-sub">후진 없이 매끄럽게 한 번에 회전하여 만족함</span></label></div>
-                    <div class="option-item"><input type="radio" name="q5" id="q5_2" value="보통"><label for="q5_2"><span class="ans-main">보통</span><span class="ans-sub">약간 불안했으나 안전하게 경로를 복귀함</span></label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_2" value="보통"><label for="q5_2"><span class="ans-main">보통</span><span class="ans-sub">약간 불안했으나 안전하게 경로 복귀함</span></label></div>
                     <div class="option-item"><input type="radio" name="q5" id="q5_3" value="개선 필요"><label for="q5_3"><span class="ans-main">개선 필요</span><span class="ans-sub">회전반경 부족으로 후진 재진행 시 불안함</span></label></div>
                     <div class="option-item"><input type="radio" name="q5" id="q5_4" value="의견 없음"><label for="q5_4"><span class="ans-main">의견 없음</span><span class="ans-sub">코스 중 유턴 구간이 없었거나 기억나지 않음</span></label></div>
                 </div>
@@ -457,7 +460,7 @@
     let currentStep = 0;
     const totalQuestions = 10;
 
-    // 💡 GitHub 저장소의 최상위 경로에 저장한 q1.png ~ q10.png 이미지를 각 단계에 매칭합니다.
+    // 💡 0번부터 10번까지의 이미지 목록 배열
     const images = [
         "image.png", // 0단계 시작 화면 (로고 이미지)
         "q1.png",    // 1번 문항 이미지
@@ -480,18 +483,22 @@
         const imgContainer = document.getElementById('headerImage');
         const img = document.getElementById('currentImg');
         
-        // 이미지 전환 효과 및 object-fit 동적 제어
+        // 이미지 전환 효과
         img.style.opacity = 0;
         setTimeout(() => {
             img.src = images[step];
             
-            // 0단계 시작화면 로고(image.png)는 찌그러지지 않게 'contain' 처리,
-            // 1~10단계 현장 이미지(q1.png~q10.png)는 영역에 맞게 가득 채우는 'cover' 처리
             if (step === 0) {
+                // ✨ 첫 화면만 깔끔하게 여백을 주고 원본 비율을 보장합니다 (contain + padding + white bg)
                 img.style.objectFit = 'contain';
-                img.style.backgroundColor = '#fff'; // 로고 투명 배경 대응
+                img.style.padding = '15px 20px';
+                imgContainer.style.backgroundColor = '#ffffff';
+                img.style.backgroundColor = '#ffffff';
             } else {
+                // 💡 사용자가 만족하셨던 각 항목별 이미지는 꽉 차도록 둡니다 (cover + no padding + grey bg)
                 img.style.objectFit = 'cover';
+                img.style.padding = '0';
+                imgContainer.style.backgroundColor = '#eaecef';
                 img.style.backgroundColor = '#eaecef';
             }
             img.style.opacity = 1;
