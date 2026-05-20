@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Link - 고급 QR코드 생성기</title>
+    <!-- 구글 웹 폰트 로드 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    <!-- QR코드 생성용 핵심 외부 경량 라이브러리 (qr-code-styling) -->
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 컨트롤 영역 */
+        .controls-section {
+            padding: 40px;
+            border-right: 1px solid #e5e7eb;
+        }
+
+        @media (max-width: 768px) {
+            .controls-section {
+                border-right: none;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 25px;
+            }
+        }
+
+        .logo-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .logo-title h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .logo-title span {
+            color: #2563eb;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #4b5563;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-text {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+            color: #1f2937;
+        }
+
+        .input-text:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        /* 그리드 컬러 옵션 */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .select-custom {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .color-picker-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f9fafb;
+            padding: 8px 12px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 12px;
+        }
+
+        .color-picker-wrapper input[type="color"] {
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            background: none;
+        }
+
+        /* 미리보기 영역 */
+        .preview-section {
+            background-color: #fafbfd;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .preview-section {
+                padding: 40px 25px;
+            }
+        }
+
+        .qr-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 25px;
+            border: 1px solid #f1f5f9;
+        }
+
+        #canvas {
+            display: block;
+        }
+
+        .download-btn {
+            width: 100%;
+            max-width: 250px;
+            padding: 15px 25px;
+            background-color: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .download-btn:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .helper-text {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 15px;
+            text-align: center;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 왼쪽 설정 제어부 -->
+    <div class="controls-section">
+        <div class="logo-title">
+            <h2>Future Link <span>QR Studio</span></h2>
+        </div>
+
+        <!-- 1. URL 입력 -->
+        <div class="form-group">
+            <label for="qrUrl">설문조사 주소 (URL)</label>
+            <input type="text" id="qrUrl" class="input-text" placeholder="https://아이디.github.io/survey-repo/" value="https://">
+        </div>
+
+        <div class="options-grid">
+            <!-- 2. QR 내부 점(Dot) 디자인 모양 -->
+            <div class="form-group">
+                <label for="dotType">내부 도트 스타일</label>
+                <select id="dotType" class="select-custom" onchange="generateQr()">
+                    <option value="rounded">둥근 형태 (추천)</option>
+                    <option value="dots">원형 점</option>
+                    <option value="classy">클래시 스퀘어</option>
+                    <option value="classy-rounded">클래시 라운드</option>
+                    <option value="square" selected>기본 사각형</option>
+                </select>
+            </div>
+
+            <!-- 3. 모서리 눈(Eye) 모양 -->
+            <div class="form-group">
+                <label for="cornerType">모서리 마커 스타일</label>
+                <select id="cornerType" class="select-custom" onchange="generateQr()">
+                    <option value="extra-rounded">초강력 라운드</option>
+                    <option value="rounded">기본 라운드</option>
+                    <option value="square" selected>기본 사각형</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="options-grid">
+            <!-- 4. QR 코드 색상 설정 -->
+            <div class="form-group">
+                <label for="qrColor">QR코드 메인 컬러</label>
+                <div class="color-picker-wrapper">
+                    <input type="color" id="qrColor" value="#1a365d" onchange="generateQr()">
+                    <span id="colorHex" style="font-size: 12px; font-weight: 500; font-family: monospace;">#1A365D</span>
+                </div>
+            </div>
+
+            <!-- 5. 로고 삽입 여부 -->
+            <div class="form-group">
+                <label for="useLogo">중앙 로고 노출</label>
+                <select id="useLogo" class="select-custom" onchange="generateQr()">
+                    <option value="yes">로고 배치 (추천)</option>
+                    <option value="no">로고 없음</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 15px; margin-bottom: 0;">
+            <label>중앙 로고 팁</label>
+            <p style="font-size: 11px; color: #6b7280; line-height: 1.5; word-break: keep-all;">
+                이 생성기는 같은 폴더 내에 있는 <strong>image.png</strong>를 자동으로 찾아 QR코드 정중앙에 완벽하게 삽입해 줍니다. 깃허브 저장소에 로고 파일이 존재해야 노출됩니다.
+            </p>
+        </div>
+    </div>
+
+    <!-- 오른쪽 실시간 미리보기 및 다운로드부 -->
+    <div class="preview-section">
+        <div class="qr-card">
+            <!-- 실시간 QR코드가 그려질 캔버스 영역 -->
+            <div id="canvas"></div>
+        </div>
+
+        <button type="button" class="download-btn" onclick="downloadQr()">
+            <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            QR코드 다운로드
+        </button>
+        <p class="helper-text">자동 생성된 QR코드는 고해상도 인쇄용으로 인쇄 가능합니다.<br>배포용 팜플렛, 배너, 스티커 등에 배치하여 배포해 보세요.</p>
+    </div>
+</div>
+
+<script>
+    // QR코드 생성기 클래스 객체 선언
+    let qrCode;
+    
+    // 초기화 및 첫 로드
+    window.onload = function() {
+        // 브라우저 현재 주소를 기반으로 대략적인 GitHub 주소 추측 제공
+        const currentLoc = window.location.href;
+        if(currentLoc.includes("github.io")) {
+            document.getElementById('qrUrl').value = currentLoc.replace("qr_generator.html", "");
+        } else {
+            document.getElementById('qrUrl').value = "https://";
+        }
+        
+        // QR코드 초기 드로잉
+        generateQr();
+
+        // 주소창 값 입력 시 실시간 반영
+        document.getElementById('qrUrl').addEventListener('input', function() {
+            generateQr();
+        });
+    };
+
+    function generateQr() {
+        const urlValue = document.getElementById('qrUrl').value || "https://";
+        const dotStyle = document.getElementById('dotType').value;
+        const cornerStyle = document.getElementById('cornerType').value;
+        const mainColor = document.getElementById('qrColor').value;
+        const logoDecision = document.getElementById('useLogo').value;
+        
+        // 컬러 헥사 코드 텍스트 동기화
+        document.getElementById('colorHex').innerText = mainColor.toUpperCase();
+
+        const canvasContainer = document.getElementById('canvas');
+        canvasContainer.innerHTML = ""; // 이전 캔버스 지우기
+
+        // 중앙 로고 이미지 사용 여부
+        let logoPath = "";
+        if (logoDecision === "yes") {
+            logoPath = "image.png"; // 동일 폴더 상의 퓨처링크 로고 연계
+        }
+
+        // qr-code-styling 인스턴스 셋업 및 생성
+        qrCode = new QRCodeStyling({
+            width: 250,
+            height: 250,
+            type: "svg",
+            data: urlValue,
+            image: logoPath,
+            dotsOptions: {
+                color: mainColor,
+                type: dotStyle
+            },
+            backgroundOptions: {
+                color: "#ffffff",
+            },
+            imageOptions: {
+                crossOrigin: "anonymous",
+                margin: 4, // 로고 주변 여백 확보
+                imageSize: 0.45 // 로고 적당한 크기 제한 (인식률 보장 범위)
+            },
+            cornersSquareOptions: {
+                color: mainColor,
+                type: cornerStyle
+            },
+            cornersDotOptions: {
+                color: mainColor,
+                type: cornerStyle === "square" ? "square" : "dot"
+            }
+        });
+
+        // 지정된 태그 내부에 QR 렌더링
+        qrCode.append(canvasContainer);
+    }
+
+    // QR코드 로컬 다운로드 함수
+    function downloadQr() {
+        if (!qrCode) return;
+        
+        // 인쇄용 고해상도 품질로 다운로드 파일명 지정 및 포맷팅 (.png)
+        qrCode.download({
+            name: "FutureLink_Survey_QR",
+            extension: "png"
+        });
+    }
+</script>
+</body>
+</html>
