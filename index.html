@@ -577,7 +577,7 @@
         submitBtn.disabled = true;
         submitBtn.innerText = "제출 중...";
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbz88eShZ-yL9xVdkwXsW7RPUp2stTF_2-bEUp9p3YP_PrkzzeRfM0F0jREKgReYffW4/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzk7XoHB9grZl6ttdY8N0XGP6yfoCzUn8668NuwbtZOKm1p8VD7CYXEYgq18Kw2Zt0a/exec';
         const formData = new FormData(document.getElementById('surveyForm'));
         const params = new URLSearchParams();
         for (const pair of formData) { params.append(pair[0], pair[1]); }
