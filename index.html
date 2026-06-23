@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -130,7 +129,6 @@
             word-break: keep-all; 
         }
         
-        /* 선택지: 설명 제거로 더 컴팩트하게 */
         .options-list { list-style: none; padding: 0; margin: 0; }
         .option-item { margin-bottom: 8px; }
         .option-item input[type="radio"] { display: none; }
@@ -149,7 +147,6 @@
             color: #2d3748;
         }
 
-        /* 라디오 커스텀 원형 인디케이터 */
         .option-item label::before {
             content: '';
             flex-shrink: 0;
@@ -212,7 +209,6 @@
         .modal-btn-warning { background: #4a5568; }
         .modal-btn-warning:hover { background: #2d3748; }
 
-        /* 기타 의견 textarea */
         .free-text-area {
             width: 100%;
             min-height: 130px;
@@ -279,12 +275,13 @@
 
             <!-- 1단계 -->
             <div class="step" id="step1">
-                <div class="question-title">1. 자율주행 차량의 전반적인 주행 안정성에 만족하셨습니까?</div>
+                <div class="question-title">1. 자율주행 중 출발·정지 시 가감속이 얼마나 부드러웠나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q1" id="q1_1" value="매우 만족"><label for="q1_1">매우 만족</label></div>
-                    <div class="option-item"><input type="radio" name="q1" id="q1_2" value="만족"><label for="q1_2">만족</label></div>
-                    <div class="option-item"><input type="radio" name="q1" id="q1_3" value="보통"><label for="q1_3">보통</label></div>
-                    <div class="option-item"><input type="radio" name="q1" id="q1_4" value="불만족"><label for="q1_4">불만족</label></div>
+                    <div class="option-item"><input type="radio" name="q1" id="q1_1" value="매우 부드러웠다"><label for="q1_1">매우 부드러웠다</label></div>
+                    <div class="option-item"><input type="radio" name="q1" id="q1_2" value="대체로 부드러웠다"><label for="q1_2">대체로 부드러웠다</label></div>
+                    <div class="option-item"><input type="radio" name="q1" id="q1_3" value="보통이었다"><label for="q1_3">보통이었다</label></div>
+                    <div class="option-item"><input type="radio" name="q1" id="q1_4" value="약간 울컥거렸다"><label for="q1_4">약간 울컥거렸다</label></div>
+                    <div class="option-item"><input type="radio" name="q1" id="q1_5" value="매우 불편했다"><label for="q1_5">매우 불편했다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(0)">이전</button>
@@ -294,12 +291,13 @@
 
             <!-- 2단계 -->
             <div class="step" id="step2">
-                <div class="question-title">2. 장애물·돌발 상황에서의 안전 중심 보수적 대응은 어떠하셨습니까?</div>
+                <div class="question-title">2. 곡선 도로 주행 또는 차선 변경 시 차량의 조향이 안정적이었나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q2" id="q2_1" value="매우 만족"><label for="q2_1">매우 만족</label></div>
-                    <div class="option-item"><input type="radio" name="q2" id="q2_2" value="만족 (다소 방어적)"><label for="q2_2">만족 (다소 방어적)</label></div>
-                    <div class="option-item"><input type="radio" name="q2" id="q2_3" value="답답함"><label for="q2_3">답답함</label></div>
-                    <div class="option-item"><input type="radio" name="q2" id="q2_4" value="해당 없음"><label for="q2_4">해당 없음</label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_1" value="매우 안정적이었다"><label for="q2_1">매우 안정적이었다</label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_2" value="대체로 안정적이었다"><label for="q2_2">대체로 안정적이었다</label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_3" value="보통이었다"><label for="q2_3">보통이었다</label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_4" value="약간 불안했다"><label for="q2_4">약간 불안했다</label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_5" value="매우 불안했다"><label for="q2_5">매우 불안했다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(1)">이전</button>
@@ -309,12 +307,13 @@
 
             <!-- 3단계 -->
             <div class="step" id="step3">
-                <div class="question-title">3. 시승 탑승 시간 및 주행 코스 길이는 적절했습니까?</div>
+                <div class="question-title">3. 자율주행 중 심리적으로 편안하게 탑승할 수 있었나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q3" id="q3_1" value="매우 적절함"><label for="q3_1">매우 적절함</label></div>
-                    <div class="option-item"><input type="radio" name="q3" id="q3_2" value="너무 짧음"><label for="q3_2">너무 짧음</label></div>
-                    <div class="option-item"><input type="radio" name="q3" id="q3_3" value="너무 길음"><label for="q3_3">너무 길음</label></div>
-                    <div class="option-item"><input type="radio" name="q3" id="q3_4" value="기타 (도로 정체 등)"><label for="q3_4">기타 (도로 정체 등)</label></div>
+                    <div class="option-item"><input type="radio" name="q3" id="q3_1" value="매우 편안했다"><label for="q3_1">매우 편안했다</label></div>
+                    <div class="option-item"><input type="radio" name="q3" id="q3_2" value="대체로 편안했다"><label for="q3_2">대체로 편안했다</label></div>
+                    <div class="option-item"><input type="radio" name="q3" id="q3_3" value="보통이었다"><label for="q3_3">보통이었다</label></div>
+                    <div class="option-item"><input type="radio" name="q3" id="q3_4" value="약간 긴장되었다"><label for="q3_4">약간 긴장되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q3" id="q3_5" value="매우 긴장되었다"><label for="q3_5">매우 긴장되었다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(2)">이전</button>
@@ -324,12 +323,13 @@
 
             <!-- 4단계 -->
             <div class="step" id="step4">
-                <div class="question-title">4. 차량 내부 디스플레이 정보 중 가장 개선이 필요한 부분은?</div>
+                <div class="question-title">4. 자율주행 기능이 시작되거나 종료될 때 안내가 명확하게 전달되었나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q4" id="q4_1" value="전반적으로 만족함"><label for="q4_1">전반적으로 만족함</label></div>
-                    <div class="option-item"><input type="radio" name="q4" id="q4_2" value="신호 표시 개선 필요"><label for="q4_2">신호 표시 개선 필요</label></div>
-                    <div class="option-item"><input type="radio" name="q4" id="q4_3" value="객체 인식 정확도 개선 필요"><label for="q4_3">객체 인식 정확도 개선 필요</label></div>
-                    <div class="option-item"><input type="radio" name="q4" id="q4_4" value="주행 주체 표시 개선 필요"><label for="q4_4">주행 주체 표시 개선 필요</label></div>
+                    <div class="option-item"><input type="radio" name="q4" id="q4_1" value="매우 명확했다"><label for="q4_1">매우 명확했다</label></div>
+                    <div class="option-item"><input type="radio" name="q4" id="q4_2" value="대체로 명확했다"><label for="q4_2">대체로 명확했다</label></div>
+                    <div class="option-item"><input type="radio" name="q4" id="q4_3" value="보통이었다"><label for="q4_3">보통이었다</label></div>
+                    <div class="option-item"><input type="radio" name="q4" id="q4_4" value="다소 불명확했다"><label for="q4_4">다소 불명확했다</label></div>
+                    <div class="option-item"><input type="radio" name="q4" id="q4_5" value="전혀 인지하지 못했다"><label for="q4_5">전혀 인지하지 못했다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(3)">이전</button>
@@ -339,12 +339,13 @@
 
             <!-- 5단계 -->
             <div class="step" id="step5">
-                <div class="question-title">5. 유턴 시 조향 능력과 회전반경 제어는 어떠하셨습니까?</div>
+                <div class="question-title">5. 화면(클러스터·내비게이션)을 통해 차량이 주변 환경을 인식하고 있다는 것을 쉽게 파악할 수 있었나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q5" id="q5_1" value="매우 자연스러움"><label for="q5_1">매우 자연스러움</label></div>
-                    <div class="option-item"><input type="radio" name="q5" id="q5_2" value="보통"><label for="q5_2">보통</label></div>
-                    <div class="option-item"><input type="radio" name="q5" id="q5_3" value="개선 필요"><label for="q5_3">개선 필요</label></div>
-                    <div class="option-item"><input type="radio" name="q5" id="q5_4" value="해당 없음"><label for="q5_4">해당 없음</label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_1" value="매우 쉽게 파악되었다"><label for="q5_1">매우 쉽게 파악되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_2" value="대체로 파악되었다"><label for="q5_2">대체로 파악되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_3" value="보통이었다"><label for="q5_3">보통이었다</label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_4" value="파악하기 어려웠다"><label for="q5_4">파악하기 어려웠다</label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_5" value="전혀 파악할 수 없었다"><label for="q5_5">전혀 파악할 수 없었다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(4)">이전</button>
@@ -354,12 +355,13 @@
 
             <!-- 6단계 -->
             <div class="step" id="step6">
-                <div class="question-title">6. 주행 중 가감속 및 조향 승차감은 어떠하셨습니까?</div>
+                <div class="question-title">6. 경고음이나 화면 알림이 발생했을 때, 그 이유를 즉시 이해할 수 있었나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q6" id="q6_1" value="매우 우수함"><label for="q6_1">매우 우수함</label></div>
-                    <div class="option-item"><input type="radio" name="q6" id="q6_2" value="보통"><label for="q6_2">보통</label></div>
-                    <div class="option-item"><input type="radio" name="q6" id="q6_3" value="개선 필요"><label for="q6_3">개선 필요</label></div>
-                    <div class="option-item"><input type="radio" name="q6" id="q6_4" value="매우 불편함"><label for="q6_4">매우 불편함</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_1" value="즉시 이해했다"><label for="q6_1">즉시 이해했다</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_2" value="대체로 이해했다"><label for="q6_2">대체로 이해했다</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_3" value="보통이었다"><label for="q6_3">보통이었다</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_4" value="다소 혼란스러웠다"><label for="q6_4">다소 혼란스러웠다</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_5" value="전혀 이해하지 못했다"><label for="q6_5">전혀 이해하지 못했다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(5)">이전</button>
@@ -369,12 +371,13 @@
 
             <!-- 7단계 -->
             <div class="step" id="step7">
-                <div class="question-title">7. 탑승 전 사전 브리핑이 차량 이해에 도움이 되었습니까?</div>
+                <div class="question-title">7. 자율주행 중 차량이 신호등 지시를 올바르게 준수했나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q7" id="q7_1" value="매우 큰 도움이 됨"><label for="q7_1">매우 큰 도움이 됨</label></div>
-                    <div class="option-item"><input type="radio" name="q7" id="q7_2" value="어느 정도 도움이 됨"><label for="q7_2">어느 정도 도움이 됨</label></div>
-                    <div class="option-item"><input type="radio" name="q7" id="q7_3" value="별로 도움이 안 됨"><label for="q7_3">별로 도움이 안 됨</label></div>
-                    <div class="option-item"><input type="radio" name="q7" id="q7_4" value="브리핑을 받지 못함"><label for="q7_4">브리핑을 받지 못함</label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_1" value="항상 잘 준수했다"><label for="q7_1">항상 잘 준수했다</label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_2" value="대체로 준수했다"><label for="q7_2">대체로 준수했다</label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_3" value="보통이었다"><label for="q7_3">보통이었다</label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_4" value="간혹 미흡했다"><label for="q7_4">간혹 미흡했다</label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_5" value="준수하지 않았다"><label for="q7_5">준수하지 않았다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(6)">이전</button>
@@ -384,12 +387,13 @@
 
             <!-- 8단계 -->
             <div class="step" id="step8">
-                <div class="question-title">8. 탑승 중 실시간 음성 및 화면 안내는 어떠하셨습니까?</div>
+                <div class="question-title">8. 횡단보도 및 이면도로에서 보행자를 적절히 인지하고 대응했나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q8" id="q8_1" value="매우 만족"><label for="q8_1">매우 만족</label></div>
-                    <div class="option-item"><input type="radio" name="q8" id="q8_2" value="안내 강화 필요"><label for="q8_2">안내 강화 필요</label></div>
-                    <div class="option-item"><input type="radio" name="q8" id="q8_3" value="안내가 과도함"><label for="q8_3">안내가 과도함</label></div>
-                    <div class="option-item"><input type="radio" name="q8" id="q8_4" value="안내를 인지하지 못함"><label for="q8_4">안내를 인지하지 못함</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_1" value="매우 잘 대응했다"><label for="q8_1">매우 잘 대응했다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_2" value="대체로 잘 대응했다"><label for="q8_2">대체로 잘 대응했다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_3" value="보통이었다"><label for="q8_3">보통이었다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_4" value="다소 미흡했다"><label for="q8_4">다소 미흡했다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_5" value="전혀 대응하지 못했다"><label for="q8_5">전혀 대응하지 못했다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(7)">이전</button>
@@ -399,12 +403,13 @@
 
             <!-- 9단계 -->
             <div class="step" id="step9">
-                <div class="question-title">9. 향후 자율주행 대중교통 서비스를 이용할 의향이 있으십니까?</div>
+                <div class="question-title">9. 시승 전과 비교했을 때, 시승 후 자율주행 기술에 대한 신뢰도가 어떻게 변화했나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q9" id="q9_1" value="적극 이용함"><label for="q9_1">적극 이용함</label></div>
-                    <div class="option-item"><input type="radio" name="q9" id="q9_2" value="조건부 이용함"><label for="q9_2">조건부 이용함</label></div>
-                    <div class="option-item"><input type="radio" name="q9" id="q9_3" value="이용하지 않음"><label for="q9_3">이용하지 않음</label></div>
-                    <div class="option-item"><input type="radio" name="q9" id="q9_4" value="잘 모르겠음"><label for="q9_4">잘 모르겠음</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_1" value="훨씬 신뢰하게 되었다"><label for="q9_1">훨씬 신뢰하게 되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_2" value="다소 신뢰하게 되었다"><label for="q9_2">다소 신뢰하게 되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_3" value="변화 없다"><label for="q9_3">변화 없다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_4" value="다소 불신하게 되었다"><label for="q9_4">다소 불신하게 되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_5" value="훨씬 불신하게 되었다"><label for="q9_5">훨씬 불신하게 되었다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(8)">이전</button>
@@ -414,12 +419,13 @@
 
             <!-- 10단계 -->
             <div class="step" id="step10">
-                <div class="question-title">10. 서비스 확대를 위해 가장 보완이 필요한 분야는 무엇입니까?</div>
+                <div class="question-title">10. 향후 이 기능이 탑재된 차량이 대중교통으로 운영된다면, 비용을 지불하고 이용할 의향이 있으신가요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q10" id="q10_1" value="기술적 알고리즘 개선"><label for="q10_1">기술적 알고리즘 개선</label></div>
-                    <div class="option-item"><input type="radio" name="q10" id="q10_2" value="차량 제어 및 승차감 보완"><label for="q10_2">차량 제어 및 승차감 보완</label></div>
-                    <div class="option-item"><input type="radio" name="q10" id="q10_3" value="승객 소통 채널 강화"><label for="q10_3">승객 소통 채널 강화</label></div>
-                    <div class="option-item"><input type="radio" name="q10" id="q10_4" value="안전 인프라 및 법제도 정비"><label for="q10_4">안전 인프라 및 법제도 정비</label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_1" value="반드시 이용할 것이다"><label for="q10_1">반드시 이용할 것이다</label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_2" value="이용할 의향이 있다"><label for="q10_2">이용할 의향이 있다</label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_3" value="잘 모르겠다"><label for="q10_3">잘 모르겠다</label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_4" value="이용하지 않을 것 같다"><label for="q10_4">이용하지 않을 것 같다</label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_5" value="절대 이용하지 않겠다"><label for="q10_5">절대 이용하지 않겠다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(9)">이전</button>
@@ -427,15 +433,15 @@
                 </div>
             </div>
 
-            <!-- 11단계: 기타 의견 -->
+            <!-- 11단계: 주관식 -->
             <div class="step" id="step11">
-                <div class="question-title">기타 의견 (선택)</div>
+                <div class="question-title">11. 타사의 자율주행차를 경험해 보신 적이 있다면, 비교했을 때 퓨처링크의 기술력은 어느 정도라고 느끼셨나요?</div>
                 <textarea
                     class="free-text-area"
                     id="freeText"
                     name="기타의견"
                     maxlength="500"
-                    placeholder="시승 중 느끼신 점이나 추가로 전달하고 싶은 의견을 자유롭게 작성해 주세요."
+                    placeholder="경험이 없으신 분은 생략하셔도 됩니다. 경험이 있으신 분은 자유롭게 비교 의견을 작성해 주세요."
                     oninput="updateCharCount(this)"
                 ></textarea>
                 <div class="char-count"><span id="charCount">0</span> / 500</div>
@@ -532,7 +538,7 @@
     }
 
     function nextStep(step) {
-        if (currentStep > 0) {
+        if (currentStep > 0 && currentStep <= totalQuestions) {
             const inputs = document.querySelectorAll(`#step${currentStep} input[type="radio"]`);
             let checked = false;
             inputs.forEach(i => { if (i.checked) checked = true; });
