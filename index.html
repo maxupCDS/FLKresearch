@@ -627,7 +627,15 @@
         const scriptURL = 'https://script.google.com/macros/s/AKfycbzk7XoHB9grZl6ttdY8N0XGP6yfoCzUn8668NuwbtZOKm1p8VD7CYXEYgq18Kw2Zt0a/exec';
         const formData = new FormData(document.getElementById('surveyForm'));
         const params = new URLSearchParams();
-        for (const pair of formData) { params.append(pair[0], pair[1]); }
+        for (const pair of formData) { 
+            // 중복 전송 및 꼬임 방지를 위해 종합만족도와 starUI 관련 기본 수집 값은 제외하고 append
+            if (pair[0] !== '종합만족도' && pair[0] !== 'starUI') {
+                params.append(pair[0], pair[1]); 
+            }
+        }
+        
+        // ★요청사항 반영: 수동으로 확실하게 params 객체에 '종합만족도' 별점 키값과 밸류 추가
+        params.append('종합만족도', starValue);
 
         fetch(scriptURL, { method: 'POST', body: params, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
             .then(() => { showModal(); })
