@@ -17,158 +17,69 @@
             align-items: center; 
             min-height: 100vh; 
         }
-        
         .survey-container { 
-            width: 100%; 
-            max-width: 430px; 
-            background: #fff; 
-            border-radius: 20px; 
-            box-shadow: 0 12px 35px rgba(0,0,0,0.1); 
-            overflow: hidden; 
-            position: relative; 
-            display: flex;
-            flex-direction: column;
+            width: 100%; max-width: 430px; background: #fff; 
+            border-radius: 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.1); 
+            overflow: hidden; position: relative; display: flex; flex-direction: column;
         }
-        
         .header-image { 
-            width: 100%; 
-            aspect-ratio: 16 / 9;
-            max-height: 180px;
-            overflow: hidden; 
-            position: relative; 
-            background-color: #fff;
-            display: block;
+            width: 100%; aspect-ratio: 16 / 9; max-height: 180px;
+            overflow: hidden; position: relative; background-color: #fff; display: block;
         }
         .header-image img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain;
-            padding: 15px 20px;
-            transition: opacity 0.3s ease; 
-            display: block; 
-            background-color: #fff;
+            width: 100%; height: 100%; object-fit: contain; padding: 15px 20px;
+            transition: opacity 0.3s ease; display: block; background-color: #fff;
         }
-        
-        .content-padding { 
-            padding: 20px 25px 25px 25px; 
-        }
-
+        .content-padding { padding: 20px 25px 25px 25px; }
         h1 { 
-            font-size: 16px; 
-            text-align: center; 
-            color: #1a365d; 
-            margin: 0 0 5px 0; 
-            letter-spacing: -0.5px; 
-            word-break: keep-all; 
-            line-height: 1.3;
+            font-size: 16px; text-align: center; color: #1a365d; margin: 0 0 5px 0; 
+            letter-spacing: -0.5px; word-break: keep-all; line-height: 1.3;
         }
-        .subtitle { 
-            text-align: center; 
-            font-size: 12px; 
-            color: #718096; 
-            margin-bottom: 15px; 
-            font-weight: 500; 
-        }
-        
+        .subtitle { text-align: center; font-size: 12px; color: #718096; margin-bottom: 15px; font-weight: 500; }
         .progress-container { 
-            background-color: #edf2f7; 
-            height: 4px; 
-            border-radius: 2px; 
-            margin-bottom: 15px; 
-            overflow: hidden; 
-            display: none; 
+            background-color: #edf2f7; height: 4px; border-radius: 2px; 
+            margin-bottom: 15px; overflow: hidden; display: none; 
         }
         .progress-bar { 
-            height: 100%; 
-            background: linear-gradient(90deg, #3182ce, #63b3ed); 
-            width: 0%; 
-            transition: width 0.3s ease; 
+            height: 100%; background: linear-gradient(90deg, #3182ce, #63b3ed); 
+            width: 0%; transition: width 0.3s ease; 
         }
         .progress-text { 
-            text-align: right; 
-            font-size: 11px; 
-            color: #a0aec0; 
-            margin-top: 4px; 
-            display: none; 
-            margin-bottom: 8px; 
+            text-align: right; font-size: 11px; color: #a0aec0; 
+            margin-top: 4px; display: none; margin-bottom: 8px; 
         }
-
         .step { display: none; }
         .step.active { display: block; animation: slideUp 0.4s ease; }
-        
         .intro-text { 
-            text-align: center; 
-            font-size: 13px; 
-            line-height: 1.6; 
-            color: #4a5568; 
-            margin-bottom: 20px; 
-            word-break: keep-all;
+            text-align: center; font-size: 13px; line-height: 1.6; 
+            color: #4a5568; margin-bottom: 20px; word-break: keep-all;
         }
-        
         .time-badge {
-            display: block;
-            text-align: center;
-            font-size: 11px;
-            color: #718096;
-            margin-top: 15px;
-            font-weight: bold;
-            background-color: #f7fafc;
-            padding: 6px 12px;
-            border-radius: 20px;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
+            display: block; text-align: center; font-size: 11px; color: #718096;
+            margin-top: 15px; font-weight: bold; background-color: #f7fafc;
+            padding: 6px 12px; border-radius: 20px; width: fit-content;
+            margin-left: auto; margin-right: auto;
         }
-        
         .question-title { 
-            font-size: 14px; 
-            font-weight: 700; 
-            color: #2d3748; 
-            margin-bottom: 14px; 
-            line-height: 1.5; 
-            word-break: keep-all; 
+            font-size: 14px; font-weight: 700; color: #2d3748; 
+            margin-bottom: 14px; line-height: 1.5; word-break: keep-all; 
         }
-        
         .options-list { list-style: none; padding: 0; margin: 0; }
         .option-item { margin-bottom: 8px; }
         .option-item input[type="radio"] { display: none; }
         .option-item label { 
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 11px 14px; 
-            background: #f8fafc; 
-            border: 1.5px solid #e2e8f0; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            transition: all 0.2s ease;
-            font-size: 13px;
-            font-weight: 600;
-            color: #2d3748;
+            display: flex; align-items: center; gap: 10px; padding: 11px 14px; 
+            background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; 
+            cursor: pointer; transition: all 0.2s ease; font-size: 13px; font-weight: 600; color: #2d3748;
         }
-
         .option-item label::before {
-            content: '';
-            flex-shrink: 0;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 2px solid #cbd5e0;
-            background: #fff;
-            transition: all 0.2s ease;
+            content: ''; flex-shrink: 0; width: 16px; height: 16px; border-radius: 50%;
+            border: 2px solid #cbd5e0; background: #fff; transition: all 0.2s ease;
         }
-        
-        .option-item input[type="radio"]:checked + label { 
-            background: #ebf8ff; 
-            border-color: #3182ce; 
-            color: #2b6cb0;
-        }
+        .option-item input[type="radio"]:checked + label { background: #ebf8ff; border-color: #3182ce; color: #2b6cb0; }
         .option-item input[type="radio"]:checked + label::before {
-            border-color: #3182ce;
-            background: #3182ce;
-            box-shadow: inset 0 0 0 3px #fff;
+            border-color: #3182ce; background: #3182ce; box-shadow: inset 0 0 0 3px #fff;
         }
-
         .btn-group { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; }
         .nav-btn { flex: 1; padding: 13px; border: none; border-radius: 12px; font-size: 14px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
         .prev-btn { background: #f1f5f9; color: #64748b; }
@@ -176,67 +87,61 @@
         .submit-btn { background: #38a169; color: #fff; }
         .nav-btn:active { transform: scale(0.97); }
 
+        /* 별점 UI */
+        .star-wrap {
+            display: flex; flex-direction: row-reverse;
+            justify-content: center; gap: 8px; margin: 20px 0 10px;
+        }
+        .star-wrap input[type="radio"] { display: none; }
+        .star-wrap label {
+            font-size: 44px; color: #dde1e7; cursor: pointer;
+            transition: color 0.15s ease, transform 0.15s ease;
+            line-height: 1;
+        }
+        .star-wrap input[type="radio"]:checked ~ label,
+        .star-wrap label:hover,
+        .star-wrap label:hover ~ label {
+            color: #f5a623;
+        }
+        .star-wrap label:active { transform: scale(1.2); }
+        .star-label-row {
+            display: flex; justify-content: space-between;
+            font-size: 11px; color: #a0aec0; margin-top: 4px; padding: 0 4px;
+        }
+        .star-selected-text {
+            text-align: center; font-size: 13px; font-weight: 700;
+            color: #3182ce; min-height: 20px; margin-top: 8px;
+        }
+
         .modal-overlay { 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.5); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            z-index: 2000; 
-            opacity: 0; visibility: hidden; 
-            transition: all 0.25s ease; 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.5); display: flex; justify-content: center; 
+            align-items: center; z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.25s ease; 
         }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-box { 
-            background: #fff; 
-            width: 85%; max-width: 320px; 
-            padding: 25px 20px; 
-            border-radius: 20px; 
-            text-align: center; 
-            transform: scale(0.9); 
-            transition: all 0.25s ease; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            background: #fff; width: 85%; max-width: 320px; padding: 25px 20px; 
+            border-radius: 20px; text-align: center; transform: scale(0.9); 
+            transition: all 0.25s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
         .modal-overlay.active .modal-box { transform: scale(1); }
         .modal-icon-success { width: 50px; height: 50px; background: #e6f4ea; color: #34a853; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; margin: 0 auto 15px; font-weight: bold; }
         .modal-icon-warning { width: 50px; height: 50px; background: #fff3cd; color: #ffc107; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; margin: 0 auto 15px; font-weight: bold; }
         .modal-title { font-size: 16px; font-weight: bold; color: #202124; margin-bottom: 8px; }
         .modal-desc { font-size: 13px; color: #5f6368; line-height: 1.5; margin-bottom: 20px; word-break: keep-all; }
-        .modal-btn { width: 100%; padding: 12px; background: #3182ce; color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
-        .modal-btn:hover { background: #2b6cb0; }
+        .modal-btn { width: 100%; padding: 12px; background: #3182ce; color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; }
         .modal-btn-warning { background: #4a5568; }
-        .modal-btn-warning:hover { background: #2d3748; }
 
         .free-text-area {
-            width: 100%;
-            min-height: 130px;
-            padding: 14px 16px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 12px;
-            font-family: 'Noto Sans KR', sans-serif;
-            font-size: 13px;
-            color: #2d3748;
-            background: #f8fafc;
-            resize: vertical;
-            outline: none;
-            transition: border-color 0.2s ease;
-            line-height: 1.6;
+            width: 100%; min-height: 130px; padding: 14px 16px;
+            border: 1.5px solid #e2e8f0; border-radius: 12px;
+            font-family: 'Noto Sans KR', sans-serif; font-size: 13px; color: #2d3748;
+            background: #f8fafc; resize: vertical; outline: none;
+            transition: border-color 0.2s ease; line-height: 1.6;
         }
-        .free-text-area:focus {
-            border-color: #3182ce;
-            background: #fff;
-        }
-        .free-text-area::placeholder {
-            color: #a0aec0;
-        }
-        .char-count {
-            text-align: right;
-            font-size: 11px;
-            color: #a0aec0;
-            margin-top: 5px;
-        }
+        .free-text-area:focus { border-color: #3182ce; background: #fff; }
+        .free-text-area::placeholder { color: #a0aec0; }
+        .char-count { text-align: right; font-size: 11px; color: #a0aec0; margin-top: 5px; }
 
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(12px); }
@@ -245,18 +150,16 @@
     </style>
 </head>
 <body>
-
 <div class="survey-container">
     <div class="header-image" id="headerImage">
         <img id="currentImg" src="image.png" alt="설문지 상단 이미지">
     </div>
-
     <div class="content-padding">
         <h1 id="mainTitle">자율주행자동차 시승 만족도 조사</h1>
         <div class="progress-container" id="progressContainer">
             <div class="progress-bar" id="progressBar"></div>
         </div>
-        <div class="progress-text" id="progressText">0 / 10</div>
+        <div class="progress-text" id="progressText">0 / 11</div>
 
         <form id="surveyForm">
             <!-- 0단계: 시작화면 -->
@@ -275,7 +178,7 @@
 
             <!-- 1단계 -->
             <div class="step" id="step1">
-                <div class="question-title">1. 자율주행 중 출발·정지 시 가감속이 얼마나 부드러웠나요?</div>
+                <div class="question-title">1. 자율주행 중 승차감이 얼마나 부드러웠나요?</div>
                 <div class="options-list">
                     <div class="option-item"><input type="radio" name="q1" id="q1_1" value="매우 부드러웠다"><label for="q1_1">매우 부드러웠다</label></div>
                     <div class="option-item"><input type="radio" name="q1" id="q1_2" value="대체로 부드러웠다"><label for="q1_2">대체로 부드러웠다</label></div>
@@ -339,7 +242,7 @@
 
             <!-- 5단계 -->
             <div class="step" id="step5">
-                <div class="question-title">5. 화면(클러스터·내비게이션)을 통해 차량이 주변 환경을 인식하고 있다는 것을 쉽게 파악할 수 있었나요?</div>
+                <div class="question-title">5. 화면을 통해 자율차가 주변 환경을 인식하고 있다는 것을 쉽게 파악할 수 있었나요?</div>
                 <div class="options-list">
                     <div class="option-item"><input type="radio" name="q5" id="q5_1" value="매우 쉽게 파악되었다"><label for="q5_1">매우 쉽게 파악되었다</label></div>
                     <div class="option-item"><input type="radio" name="q5" id="q5_2" value="대체로 파악되었다"><label for="q5_2">대체로 파악되었다</label></div>
@@ -353,15 +256,15 @@
                 </div>
             </div>
 
-            <!-- 6단계 -->
+            <!-- 6단계 (구 Q7: 신호등) -->
             <div class="step" id="step6">
-                <div class="question-title">6. 경고음이나 화면 알림이 발생했을 때, 그 이유를 즉시 이해할 수 있었나요?</div>
+                <div class="question-title">6. 자율주행 중 차량이 신호등 지시를 올바르게 준수했나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q6" id="q6_1" value="즉시 이해했다"><label for="q6_1">즉시 이해했다</label></div>
-                    <div class="option-item"><input type="radio" name="q6" id="q6_2" value="대체로 이해했다"><label for="q6_2">대체로 이해했다</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_1" value="항상 잘 준수했다"><label for="q6_1">항상 잘 준수했다</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_2" value="대체로 준수했다"><label for="q6_2">대체로 준수했다</label></div>
                     <div class="option-item"><input type="radio" name="q6" id="q6_3" value="보통이었다"><label for="q6_3">보통이었다</label></div>
-                    <div class="option-item"><input type="radio" name="q6" id="q6_4" value="다소 혼란스러웠다"><label for="q6_4">다소 혼란스러웠다</label></div>
-                    <div class="option-item"><input type="radio" name="q6" id="q6_5" value="전혀 이해하지 못했다"><label for="q6_5">전혀 이해하지 못했다</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_4" value="간혹 미흡했다"><label for="q6_4">간혹 미흡했다</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_5" value="준수하지 않았다"><label for="q6_5">준수하지 않았다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(5)">이전</button>
@@ -369,15 +272,15 @@
                 </div>
             </div>
 
-            <!-- 7단계 -->
+            <!-- 7단계 (구 Q8: 보행자) -->
             <div class="step" id="step7">
-                <div class="question-title">7. 자율주행 중 차량이 신호등 지시를 올바르게 준수했나요?</div>
+                <div class="question-title">7. 횡단보도 및 이면도로에서 보행자를 적절히 인지하고 대응했나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q7" id="q7_1" value="항상 잘 준수했다"><label for="q7_1">항상 잘 준수했다</label></div>
-                    <div class="option-item"><input type="radio" name="q7" id="q7_2" value="대체로 준수했다"><label for="q7_2">대체로 준수했다</label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_1" value="매우 잘 대응했다"><label for="q7_1">매우 잘 대응했다</label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_2" value="대체로 잘 대응했다"><label for="q7_2">대체로 잘 대응했다</label></div>
                     <div class="option-item"><input type="radio" name="q7" id="q7_3" value="보통이었다"><label for="q7_3">보통이었다</label></div>
-                    <div class="option-item"><input type="radio" name="q7" id="q7_4" value="간혹 미흡했다"><label for="q7_4">간혹 미흡했다</label></div>
-                    <div class="option-item"><input type="radio" name="q7" id="q7_5" value="준수하지 않았다"><label for="q7_5">준수하지 않았다</label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_4" value="다소 미흡했다"><label for="q7_4">다소 미흡했다</label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_5" value="전혀 대응하지 못했다"><label for="q7_5">전혀 대응하지 못했다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(6)">이전</button>
@@ -385,15 +288,15 @@
                 </div>
             </div>
 
-            <!-- 8단계 -->
+            <!-- 8단계 (구 Q9: 신뢰도) -->
             <div class="step" id="step8">
-                <div class="question-title">8. 횡단보도 및 이면도로에서 보행자를 적절히 인지하고 대응했나요?</div>
+                <div class="question-title">8. 시승 전과 비교했을 때, 시승 후 자율주행 기술에 대한 신뢰도가 어떻게 변화했나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q8" id="q8_1" value="매우 잘 대응했다"><label for="q8_1">매우 잘 대응했다</label></div>
-                    <div class="option-item"><input type="radio" name="q8" id="q8_2" value="대체로 잘 대응했다"><label for="q8_2">대체로 잘 대응했다</label></div>
-                    <div class="option-item"><input type="radio" name="q8" id="q8_3" value="보통이었다"><label for="q8_3">보통이었다</label></div>
-                    <div class="option-item"><input type="radio" name="q8" id="q8_4" value="다소 미흡했다"><label for="q8_4">다소 미흡했다</label></div>
-                    <div class="option-item"><input type="radio" name="q8" id="q8_5" value="전혀 대응하지 못했다"><label for="q8_5">전혀 대응하지 못했다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_1" value="훨씬 신뢰하게 되었다"><label for="q8_1">훨씬 신뢰하게 되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_2" value="다소 신뢰하게 되었다"><label for="q8_2">다소 신뢰하게 되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_3" value="변화 없다"><label for="q8_3">변화 없다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_4" value="다소 불신하게 되었다"><label for="q8_4">다소 불신하게 되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_5" value="훨씬 불신하게 되었다"><label for="q8_5">훨씬 불신하게 되었다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(7)">이전</button>
@@ -401,15 +304,15 @@
                 </div>
             </div>
 
-            <!-- 9단계 -->
+            <!-- 9단계 (구 Q10: 대중교통) -->
             <div class="step" id="step9">
-                <div class="question-title">9. 시승 전과 비교했을 때, 시승 후 자율주행 기술에 대한 신뢰도가 어떻게 변화했나요?</div>
+                <div class="question-title">9. 향후, 자율주행차가 대중교통으로 운영된다면, 비용을 지불하고 이용할 의향이 있으신가요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q9" id="q9_1" value="훨씬 신뢰하게 되었다"><label for="q9_1">훨씬 신뢰하게 되었다</label></div>
-                    <div class="option-item"><input type="radio" name="q9" id="q9_2" value="다소 신뢰하게 되었다"><label for="q9_2">다소 신뢰하게 되었다</label></div>
-                    <div class="option-item"><input type="radio" name="q9" id="q9_3" value="변화 없다"><label for="q9_3">변화 없다</label></div>
-                    <div class="option-item"><input type="radio" name="q9" id="q9_4" value="다소 불신하게 되었다"><label for="q9_4">다소 불신하게 되었다</label></div>
-                    <div class="option-item"><input type="radio" name="q9" id="q9_5" value="훨씬 불신하게 되었다"><label for="q9_5">훨씬 불신하게 되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_1" value="반드시 이용할 것이다"><label for="q9_1">반드시 이용할 것이다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_2" value="이용할 의향이 있다"><label for="q9_2">이용할 의향이 있다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_3" value="잘 모르겠다"><label for="q9_3">잘 모르겠다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_4" value="이용하지 않을 것 같다"><label for="q9_4">이용하지 않을 것 같다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_5" value="절대 이용하지 않겠다"><label for="q9_5">절대 이용하지 않겠다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(8)">이전</button>
@@ -417,34 +320,28 @@
                 </div>
             </div>
 
-            <!-- 10단계 -->
-            <div class="step" id="step10">
-                <div class="question-title">10. 향후 이 기능이 탑재된 차량이 대중교통으로 운영된다면, 비용을 지불하고 이용할 의향이 있으신가요?</div>
-                <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q10" id="q10_1" value="반드시 이용할 것이다"><label for="q10_1">반드시 이용할 것이다</label></div>
-                    <div class="option-item"><input type="radio" name="q10" id="q10_2" value="이용할 의향이 있다"><label for="q10_2">이용할 의향이 있다</label></div>
-                    <div class="option-item"><input type="radio" name="q10" id="q10_3" value="잘 모르겠다"><label for="q10_3">잘 모르겠다</label></div>
-                    <div class="option-item"><input type="radio" name="q10" id="q10_4" value="이용하지 않을 것 같다"><label for="q10_4">이용하지 않을 것 같다</label></div>
-                    <div class="option-item"><input type="radio" name="q10" id="q10_5" value="절대 이용하지 않겠다"><label for="q10_5">절대 이용하지 않겠다</label></div>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(9)">이전</button>
-                    <button type="button" class="next-btn nav-btn" onclick="nextStep(11)">다음</button>
-                </div>
-            </div>
-
-            <!-- 11단계: 주관식 -->
+            <!-- 10단계: 별점 만족도 -->
             <div class="step" id="step11">
-                <div class="question-title">11. 타사의 자율주행차를 경험해 보신 적이 있다면, 비교했을 때 퓨처링크의 기술력은 어느 정도라고 느끼셨나요?</div>
-                <textarea
-                    class="free-text-area"
-                    id="freeText"
-                    name="기타의견"
-                    maxlength="500"
-                    placeholder="경험이 없으신 분은 생략하셔도 됩니다. 경험이 있으신 분은 자유롭게 비교 의견을 작성해 주세요."
-                    oninput="updateCharCount(this)"
-                ></textarea>
-                <div class="char-count"><span id="charCount">0</span> / 500</div>
+                <div class="question-title">10. 이번 자율주행 시승 경험에 대한 전반적인 만족도를 별점으로 평가해 주세요.</div>
+
+                <div class="star-wrap">
+                    <input type="radio" name="종합만족도" id="star5" value="5점">
+                    <label for="star5">★</label>
+                    <input type="radio" name="종합만족도" id="star4" value="4점">
+                    <label for="star4">★</label>
+                    <input type="radio" name="종합만족도" id="star3" value="3점">
+                    <label for="star3">★</label>
+                    <input type="radio" name="종합만족도" id="star2" value="2점">
+                    <label for="star2">★</label>
+                    <input type="radio" name="종합만족도" id="star1" value="1점">
+                    <label for="star1">★</label>
+                </div>
+                <div class="star-label-row">
+                    <span>매우 불만족</span>
+                    <span>매우 만족</span>
+                </div>
+                <div class="star-selected-text" id="starText"></div>
+
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(10)">이전</button>
                     <button type="button" id="submitBtn" class="submit-btn nav-btn" onclick="submitSurvey()">제출하기</button>
@@ -476,14 +373,24 @@
 
 <script>
     let currentStep = 0;
-    const totalQuestions = 10;
+    const totalQuestions = 11;
+
+    const starLabels = ['', '★ 매우 불만족', '★★ 불만족', '★★★ 보통', '★★★★ 만족', '★★★★★ 매우 만족'];
 
     const images = [
         "image.png",
         "q1.png","q1.png","q1.png","q1.png","q1.png",
         "q1.png","q1.png","q1.png","q1.png","q1.png",
-        "q1.png"
+        "q1.png","q1.png"
     ];
+
+    // 별점 선택 시 텍스트 표시
+    document.querySelectorAll('input[name="종합만족도"]').forEach(input => {
+        input.addEventListener('change', () => {
+            const val = parseInt(input.value);
+            document.getElementById('starText').innerText = starLabels[val];
+        });
+    });
 
     function updateProgressBar(step) {
         const container = document.getElementById('progressContainer');
@@ -492,10 +399,10 @@
         const title = document.getElementById('mainTitle');
         const imgContainer = document.getElementById('headerImage');
         const img = document.getElementById('currentImg');
-        
+
         img.style.opacity = 0;
         setTimeout(() => {
-            img.src = images[step];
+            img.src = images[step] || "q1.png";
             if (step === 0) {
                 img.style.objectFit = 'contain';
                 img.style.padding = '15px 20px';
@@ -538,7 +445,8 @@
     }
 
     function nextStep(step) {
-        if (currentStep > 0 && currentStep <= totalQuestions) {
+        // 객관식 문항(1~9)만 필수 체크
+        if (currentStep >= 1 && currentStep <= 9) {
             const inputs = document.querySelectorAll(`#step${currentStep} input[type="radio"]`);
             let checked = false;
             inputs.forEach(i => { if (i.checked) checked = true; });
@@ -565,6 +473,7 @@
         document.getElementById('surveyForm').reset();
         document.getElementById('freeText').value = '';
         document.getElementById('charCount').innerText = '0';
+        document.getElementById('starText').innerText = '';
         document.getElementById(`step${currentStep}`).classList.remove('active');
         document.getElementById('step0').classList.add('active');
         currentStep = 0;
@@ -574,10 +483,11 @@
     }
 
     function submitSurvey() {
-        const inputs = document.querySelectorAll(`#step10 input[type="radio"]`);
-        let checked = false;
-        inputs.forEach(i => { if (i.checked) checked = true; });
-        if (!checked) { showWarningModal("답변 누락", "10번 질문에 답변을 선택해 주세요."); return; }
+        // 별점 필수 체크
+        const starInputs = document.querySelectorAll('input[name="종합만족도"]');
+        let starChecked = false;
+        starInputs.forEach(i => { if (i.checked) starChecked = true; });
+        if (!starChecked) { showWarningModal("별점 선택 필요", "별점을 선택한 후 제출해 주세요."); return; }
 
         const submitBtn = document.getElementById('submitBtn');
         submitBtn.disabled = true;
