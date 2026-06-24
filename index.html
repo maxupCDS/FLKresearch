@@ -432,7 +432,7 @@
 
             <!-- 9단계 -->
             <div class="step" id="step9">
-                <div class="question-title">9. 향후, 자율주행차가 대중교통으로 운영된다면, 비용을 지불하고 이용할 의향이 있으신가요?</div>
+                <div class="question-title">9. 향후 이 기능이 탑재된 차량이 대중교통으로 운영된다면, 비용을 지불하고 이용할 의향이 있으신가요?</div>
                 <div class="options-list">
                     <div class="option-item"><input type="radio" name="q9" id="q9_1" value="반드시 이용할 것이다"><label for="q9_1">반드시 이용할 것이다</label></div>
                     <div class="option-item"><input type="radio" name="q9" id="q9_2" value="이용할 의향이 있다"><label for="q9_2">이용할 의향이 있다</label></div>
@@ -450,16 +450,19 @@
             <div class="step" id="step10">
                 <div class="question-title">10. 이번 자율주행 시승 경험에 대한 전반적인 만족도를 별점으로 평가해 주세요.</div>
 
+                <!-- 실제 전송값: hidden input -->
+                <input type="hidden" name="종합만족도" id="starValue" value="">
+
                 <div class="star-wrap">
-                    <input type="radio" name="종합만족도" id="star5" value="5점">
+                    <input type="radio" name="starUI" id="star5" value="5">
                     <label for="star5">★</label>
-                    <input type="radio" name="종합만족도" id="star4" value="4점">
+                    <input type="radio" name="starUI" id="star4" value="4">
                     <label for="star4">★</label>
-                    <input type="radio" name="종합만족도" id="star3" value="3점">
+                    <input type="radio" name="starUI" id="star3" value="3">
                     <label for="star3">★</label>
-                    <input type="radio" name="종합만족도" id="star2" value="2점">
+                    <input type="radio" name="starUI" id="star2" value="2">
                     <label for="star2">★</label>
-                    <input type="radio" name="종합만족도" id="star1" value="1점">
+                    <input type="radio" name="starUI" id="star1" value="1">
                     <label for="star1">★</label>
                 </div>
                 <div class="star-label-row">
@@ -511,10 +514,11 @@
         "q1.png"
     ];
 
-    // 별점 선택 시 텍스트 피드백
-    document.querySelectorAll('input[name="종합만족도"]').forEach(input => {
+    // 별점 선택 시 hidden input에 값 기록 + 텍스트 피드백
+    document.querySelectorAll('input[name="starUI"]').forEach(input => {
         input.addEventListener('change', () => {
             const val = parseInt(input.value);
+            document.getElementById('starValue').value = val + '점';
             document.getElementById('starText').innerText = starLabels[val];
         });
     });
@@ -598,6 +602,7 @@
     function closeModal() {
         document.getElementById('successModal').classList.remove('active');
         document.getElementById('surveyForm').reset();
+        document.getElementById('starValue').value = '';
         document.getElementById('starText').innerText = '';
         document.getElementById(`step${currentStep}`).classList.remove('active');
         document.getElementById('step0').classList.add('active');
@@ -609,10 +614,8 @@
 
     function submitSurvey() {
         // 별점 필수 선택 체크
-        const starInputs = document.querySelectorAll('input[name="종합만족도"]');
-        let starChecked = false;
-        starInputs.forEach(i => { if (i.checked) starChecked = true; });
-        if (!starChecked) {
+        const starValue = document.getElementById('starValue').value;
+        if (!starValue) {
             showWarningModal("별점 선택 필요", "전반적인 만족도 별점을 선택한 후 제출해 주세요.");
             return;
         }
