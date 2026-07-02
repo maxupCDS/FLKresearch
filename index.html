@@ -129,6 +129,7 @@
             word-break: keep-all; 
         }
         
+        /* 선택지: 설명 제거로 더 컴팩트하게 */
         .options-list { list-style: none; padding: 0; margin: 0; }
         .option-item { margin-bottom: 8px; }
         .option-item input[type="radio"] { display: none; }
@@ -146,6 +147,8 @@
             font-weight: 600;
             color: #2d3748;
         }
+
+        /* 라디오 커스텀 원형 인디케이터 */
         .option-item label::before {
             content: '';
             flex-shrink: 0;
@@ -156,6 +159,7 @@
             background: #fff;
             transition: all 0.2s ease;
         }
+        
         .option-item input[type="radio"]:checked + label { 
             background: #ebf8ff; 
             border-color: #3182ce; 
@@ -173,46 +177,6 @@
         .next-btn, .start-btn { background: #3182ce; color: #fff; }
         .submit-btn { background: #38a169; color: #fff; }
         .nav-btn:active { transform: scale(0.97); }
-
-        /* ===== 별점 UI ===== */
-        .star-wrap {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: center;
-            gap: 6px;
-            margin: 22px 0 8px;
-        }
-        .star-wrap input[type="radio"] { display: none; }
-        .star-wrap label {
-            font-size: 46px;
-            color: #dde1e7;
-            cursor: pointer;
-            transition: color 0.15s ease, transform 0.15s ease;
-            line-height: 1;
-        }
-        .star-wrap input[type="radio"]:checked ~ label,
-        .star-wrap label:hover,
-        .star-wrap label:hover ~ label {
-            color: #f5a623;
-        }
-        .star-wrap label:active { transform: scale(1.15); }
-        .star-label-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: #a0aec0;
-            margin-top: 2px;
-            padding: 0 2px;
-        }
-        .star-selected-text {
-            text-align: center;
-            font-size: 14px;
-            font-weight: 700;
-            color: #3182ce;
-            min-height: 22px;
-            margin-top: 10px;
-        }
-        /* ==================== */
 
         .modal-overlay { 
             position: fixed; 
@@ -247,6 +211,7 @@
         .modal-btn-warning { background: #4a5568; }
         .modal-btn-warning:hover { background: #2d3748; }
 
+        /* 기타 의견 textarea */
         .free-text-area {
             width: 100%;
             min-height: 130px;
@@ -262,9 +227,49 @@
             transition: border-color 0.2s ease;
             line-height: 1.6;
         }
-        .free-text-area:focus { border-color: #3182ce; background: #fff; }
-        .free-text-area::placeholder { color: #a0aec0; }
-        .char-count { text-align: right; font-size: 11px; color: #a0aec0; margin-top: 5px; }
+        .free-text-area:focus {
+            border-color: #3182ce;
+            background: #fff;
+        }
+        .free-text-area::placeholder {
+            color: #a0aec0;
+        }
+        .char-count {
+            text-align: right;
+            font-size: 11px;
+            color: #a0aec0;
+            margin-top: 5px;
+        }
+
+        /* 별점 */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            gap: 6px;
+            margin: 10px 0 8px;
+        }
+        .star-rating input[type="radio"] { display: none; }
+        .star-rating label {
+            font-size: 44px;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: color 0.15s ease;
+            line-height: 1;
+        }
+        .star-rating input[type="radio"]:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #f6c90e;
+        }
+        .star-label {
+            text-align: center;
+            font-size: 13px;
+            color: #718096;
+            margin-bottom: 4px;
+            min-height: 20px;
+            font-weight: 500;
+        }
 
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(12px); }
@@ -287,7 +292,6 @@
         <div class="progress-text" id="progressText">0 / 10</div>
 
         <form id="surveyForm">
-
             <!-- 0단계: 시작화면 -->
             <div class="step active" id="step0">
                 <div class="subtitle">퓨처링크 시승 프로젝트</div>
@@ -309,7 +313,7 @@
                     <div class="option-item"><input type="radio" name="q1" id="q1_1" value="매우 부드러웠다"><label for="q1_1">매우 부드러웠다</label></div>
                     <div class="option-item"><input type="radio" name="q1" id="q1_2" value="대체로 부드러웠다"><label for="q1_2">대체로 부드러웠다</label></div>
                     <div class="option-item"><input type="radio" name="q1" id="q1_3" value="보통이었다"><label for="q1_3">보통이었다</label></div>
-                    <div class="option-item"><input type="radio" name="q1" id="q1_4" value="약간 울컥거렸다"><label for="q1_4">약간 울컥거렸다</label></div>
+                    <div class="option-item"><input type="radio" name="q1" id="q1_4" value="다소 불편했다"><label for="q1_4">다소 불편했다</label></div>
                     <div class="option-item"><input type="radio" name="q1" id="q1_5" value="매우 불편했다"><label for="q1_5">매우 불편했다</label></div>
                 </div>
                 <div class="btn-group">
@@ -325,7 +329,7 @@
                     <div class="option-item"><input type="radio" name="q2" id="q2_1" value="매우 안정적이었다"><label for="q2_1">매우 안정적이었다</label></div>
                     <div class="option-item"><input type="radio" name="q2" id="q2_2" value="대체로 안정적이었다"><label for="q2_2">대체로 안정적이었다</label></div>
                     <div class="option-item"><input type="radio" name="q2" id="q2_3" value="보통이었다"><label for="q2_3">보통이었다</label></div>
-                    <div class="option-item"><input type="radio" name="q2" id="q2_4" value="약간 불안했다"><label for="q2_4">약간 불안했다</label></div>
+                    <div class="option-item"><input type="radio" name="q2" id="q2_4" value="다소 불안했다"><label for="q2_4">다소 불안했다</label></div>
                     <div class="option-item"><input type="radio" name="q2" id="q2_5" value="매우 불안했다"><label for="q2_5">매우 불안했다</label></div>
                 </div>
                 <div class="btn-group">
@@ -341,8 +345,8 @@
                     <div class="option-item"><input type="radio" name="q3" id="q3_1" value="매우 편안했다"><label for="q3_1">매우 편안했다</label></div>
                     <div class="option-item"><input type="radio" name="q3" id="q3_2" value="대체로 편안했다"><label for="q3_2">대체로 편안했다</label></div>
                     <div class="option-item"><input type="radio" name="q3" id="q3_3" value="보통이었다"><label for="q3_3">보통이었다</label></div>
-                    <div class="option-item"><input type="radio" name="q3" id="q3_4" value="약간 긴장되었다"><label for="q3_4">약간 긴장되었다</label></div>
-                    <div class="option-item"><input type="radio" name="q3" id="q3_5" value="매우 긴장되었다"><label for="q3_5">매우 긴장되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q3" id="q3_4" value="다소 불안했다"><label for="q3_4">다소 불안했다</label></div>
+                    <div class="option-item"><input type="radio" name="q3" id="q3_5" value="매우 불안했다"><label for="q3_5">매우 불안했다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(2)">이전</button>
@@ -370,11 +374,11 @@
             <div class="step" id="step5">
                 <div class="question-title">5. 화면을 통해 자율차가 주변 환경을 인식하고 있다는 것을 쉽게 파악할 수 있었나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q5" id="q5_1" value="매우 쉽게 파악되었다"><label for="q5_1">매우 쉽게 파악되었다</label></div>
-                    <div class="option-item"><input type="radio" name="q5" id="q5_2" value="대체로 파악되었다"><label for="q5_2">대체로 파악되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_1" value="매우 쉽게 파악할 수 있었다"><label for="q5_1">매우 쉽게 파악할 수 있었다</label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_2" value="대체로 파악할 수 있었다"><label for="q5_2">대체로 파악할 수 있었다</label></div>
                     <div class="option-item"><input type="radio" name="q5" id="q5_3" value="보통이었다"><label for="q5_3">보통이었다</label></div>
                     <div class="option-item"><input type="radio" name="q5" id="q5_4" value="파악하기 어려웠다"><label for="q5_4">파악하기 어려웠다</label></div>
-                    <div class="option-item"><input type="radio" name="q5" id="q5_5" value="전혀 파악할 수 없었다"><label for="q5_5">전혀 파악할 수 없었다</label></div>
+                    <div class="option-item"><input type="radio" name="q5" id="q5_5" value="화면을 확인하지 않았다"><label for="q5_5">화면을 확인하지 않았다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(4)">이전</button>
@@ -386,11 +390,11 @@
             <div class="step" id="step6">
                 <div class="question-title">6. 자율주행 중 차량이 신호등 지시를 올바르게 준수했나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q6" id="q6_1" value="항상 잘 준수했다"><label for="q6_1">항상 잘 준수했다</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_1" value="매우 잘 준수했다"><label for="q6_1">매우 잘 준수했다</label></div>
                     <div class="option-item"><input type="radio" name="q6" id="q6_2" value="대체로 준수했다"><label for="q6_2">대체로 준수했다</label></div>
                     <div class="option-item"><input type="radio" name="q6" id="q6_3" value="보통이었다"><label for="q6_3">보통이었다</label></div>
-                    <div class="option-item"><input type="radio" name="q6" id="q6_4" value="간혹 미흡했다"><label for="q6_4">간혹 미흡했다</label></div>
-                    <div class="option-item"><input type="radio" name="q6" id="q6_5" value="준수하지 않았다"><label for="q6_5">준수하지 않았다</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_4" value="일부 미흡한 점이 있었다"><label for="q6_4">일부 미흡한 점이 있었다</label></div>
+                    <div class="option-item"><input type="radio" name="q6" id="q6_5" value="잘 모르겠다"><label for="q6_5">잘 모르겠다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(5)">이전</button>
@@ -406,7 +410,7 @@
                     <div class="option-item"><input type="radio" name="q7" id="q7_2" value="대체로 잘 대응했다"><label for="q7_2">대체로 잘 대응했다</label></div>
                     <div class="option-item"><input type="radio" name="q7" id="q7_3" value="보통이었다"><label for="q7_3">보통이었다</label></div>
                     <div class="option-item"><input type="radio" name="q7" id="q7_4" value="다소 미흡했다"><label for="q7_4">다소 미흡했다</label></div>
-                    <div class="option-item"><input type="radio" name="q7" id="q7_5" value="전혀 대응하지 못했다"><label for="q7_5">전혀 대응하지 못했다</label></div>
+                    <div class="option-item"><input type="radio" name="q7" id="q7_5" value="해당 상황을 경험하지 못했다"><label for="q7_5">해당 상황을 경험하지 못했다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(6)">이전</button>
@@ -418,11 +422,11 @@
             <div class="step" id="step8">
                 <div class="question-title">8. 시승 전과 비교했을 때, 시승 후 자율주행 기술에 대한 신뢰도가 어떻게 변화했나요?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q8" id="q8_1" value="훨씬 신뢰하게 되었다"><label for="q8_1">훨씬 신뢰하게 되었다</label></div>
-                    <div class="option-item"><input type="radio" name="q8" id="q8_2" value="다소 신뢰하게 되었다"><label for="q8_2">다소 신뢰하게 되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_1" value="크게 높아졌다"><label for="q8_1">크게 높아졌다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_2" value="다소 높아졌다"><label for="q8_2">다소 높아졌다</label></div>
                     <div class="option-item"><input type="radio" name="q8" id="q8_3" value="변화 없다"><label for="q8_3">변화 없다</label></div>
-                    <div class="option-item"><input type="radio" name="q8" id="q8_4" value="다소 불신하게 되었다"><label for="q8_4">다소 불신하게 되었다</label></div>
-                    <div class="option-item"><input type="radio" name="q8" id="q8_5" value="훨씬 불신하게 되었다"><label for="q8_5">훨씬 불신하게 되었다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_4" value="다소 낮아졌다"><label for="q8_4">다소 낮아졌다</label></div>
+                    <div class="option-item"><input type="radio" name="q8" id="q8_5" value="크게 낮아졌다"><label for="q8_5">크게 낮아졌다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(7)">이전</button>
@@ -432,13 +436,13 @@
 
             <!-- 9단계 -->
             <div class="step" id="step9">
-                <div class="question-title">9. 향후, 자율주행차가 대중교통으로 운영된다면, 비용을 지불하고 이용할 의향이 있으신가요??</div>
+                <div class="question-title">9. 다시 자율주행차를 탑승하시겠습니까?</div>
                 <div class="options-list">
-                    <div class="option-item"><input type="radio" name="q9" id="q9_1" value="반드시 이용할 것이다"><label for="q9_1">반드시 이용할 것이다</label></div>
-                    <div class="option-item"><input type="radio" name="q9" id="q9_2" value="이용할 의향이 있다"><label for="q9_2">이용할 의향이 있다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_1" value="반드시 다시 탑승하겠다"><label for="q9_1">반드시 다시 탑승하겠다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_2" value="기회가 된다면 탑승하겠다"><label for="q9_2">기회가 된다면 탑승하겠다</label></div>
                     <div class="option-item"><input type="radio" name="q9" id="q9_3" value="잘 모르겠다"><label for="q9_3">잘 모르겠다</label></div>
-                    <div class="option-item"><input type="radio" name="q9" id="q9_4" value="이용하지 않을 것 같다"><label for="q9_4">이용하지 않을 것 같다</label></div>
-                    <div class="option-item"><input type="radio" name="q9" id="q9_5" value="절대 이용하지 않겠다"><label for="q9_5">절대 이용하지 않겠다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_4" value="별로 탑승하고 싶지 않다"><label for="q9_4">별로 탑승하고 싶지 않다</label></div>
+                    <div class="option-item"><input type="radio" name="q9" id="q9_5" value="전혀 탑승하고 싶지 않다"><label for="q9_5">전혀 탑승하고 싶지 않다</label></div>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(8)">이전</button>
@@ -446,36 +450,39 @@
                 </div>
             </div>
 
-            <!-- 10단계: 별점 만족도 -->
+            <!-- 10단계 -->
             <div class="step" id="step10">
-                <div class="question-title">10. 이번 자율주행 시승 경험에 대한 전반적인 만족도를 별점으로 평가해 주세요.</div>
-
-                <!-- 실제 전송값: hidden input -->
-                <input type="hidden" name="종합만족도" id="starValue" value="">
-
-                <div class="star-wrap">
-                    <input type="radio" name="starUI" id="star5" value="5">
-                    <label for="star5">★</label>
-                    <input type="radio" name="starUI" id="star4" value="4">
-                    <label for="star4">★</label>
-                    <input type="radio" name="starUI" id="star3" value="3">
-                    <label for="star3">★</label>
-                    <input type="radio" name="starUI" id="star2" value="2">
-                    <label for="star2">★</label>
-                    <input type="radio" name="starUI" id="star1" value="1">
-                    <label for="star1">★</label>
+                <div class="question-title">10. 향후, 자율주행차가 대중교통으로 운영된다면 비용을 지불하고 이용할 의향이 있으신가요?</div>
+                <div class="options-list">
+                    <div class="option-item"><input type="radio" name="q10" id="q10_1" value="반드시 이용하겠다"><label for="q10_1">반드시 이용하겠다</label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_2" value="가격이 적절하면 이용하겠다"><label for="q10_2">가격이 적절하면 이용하겠다</label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_3" value="잘 모르겠다"><label for="q10_3">잘 모르겠다</label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_4" value="별로 이용하고 싶지 않다"><label for="q10_4">별로 이용하고 싶지 않다</label></div>
+                    <div class="option-item"><input type="radio" name="q10" id="q10_5" value="전혀 이용하지 않겠다"><label for="q10_5">전혀 이용하지 않겠다</label></div>
                 </div>
-                <div class="star-label-row">
-                    <span>매우 불만족</span>
-                    <span>매우 만족</span>
-                </div>
-                <div class="star-selected-text" id="starText"></div>
-
                 <div class="btn-group">
                     <button type="button" class="prev-btn nav-btn" onclick="prevStep(9)">이전</button>
+                    <button type="button" class="next-btn nav-btn" onclick="nextStep(11)">다음</button>
+                </div>
+            </div>
+
+            <!-- 11단계: 종합 만족도 별점 -->
+            <div class="step" id="step11">
+                <div class="question-title">종합 만족도를 별점으로 평가해 주세요.</div>
+                <div class="star-rating">
+                    <input type="radio" name="종합만족도" id="star5" value="5"><label for="star5">★</label>
+                    <input type="radio" name="종합만족도" id="star4" value="4"><label for="star4">★</label>
+                    <input type="radio" name="종합만족도" id="star3" value="3"><label for="star3">★</label>
+                    <input type="radio" name="종합만족도" id="star2" value="2"><label for="star2">★</label>
+                    <input type="radio" name="종합만족도" id="star1" value="1"><label for="star1">★</label>
+                </div>
+                <div class="star-label" id="starLabel">별점을 선택해 주세요</div>
+                <div class="btn-group">
+                    <button type="button" class="prev-btn nav-btn" onclick="prevStep(10)">이전</button>
                     <button type="button" id="submitBtn" class="submit-btn nav-btn" onclick="submitSurvey()">제출하기</button>
                 </div>
             </div>
+
 
         </form>
     </div>
@@ -503,9 +510,7 @@
 
 <script>
     let currentStep = 0;
-    const totalQuestions = 10;
-
-    const starLabels = ['', '★ 매우 불만족', '★★ 불만족', '★★★ 보통', '★★★★ 만족', '★★★★★ 매우 만족'];
+    const totalQuestions = 11; // 1~10번 + 종합만족도
 
     const images = [
         "image.png",
@@ -514,12 +519,12 @@
         "q1.png"
     ];
 
-    // 별점 선택 시 hidden input에 값 기록 + 텍스트 피드백
-    document.querySelectorAll('input[name="starUI"]').forEach(input => {
-        input.addEventListener('change', () => {
-            const val = parseInt(input.value);
-            document.getElementById('starValue').value = val + '점';
-            document.getElementById('starText').innerText = starLabels[val];
+    const starLabels = { 1:"😞 매우 불만족", 2:"😕 불만족", 3:"😐 보통", 4:"😊 만족", 5:"😄 매우 만족" };
+
+    // 별점 라벨 실시간 업데이트
+    document.querySelectorAll('.star-rating input[type="radio"]').forEach(el => {
+        el.addEventListener('change', () => {
+            document.getElementById('starLabel').innerText = starLabels[el.value] || '';
         });
     });
 
@@ -533,7 +538,7 @@
         
         img.style.opacity = 0;
         setTimeout(() => {
-            img.src = images[step] || "q1.png";
+            img.src = images[step];
             if (step === 0) {
                 img.style.objectFit = 'contain';
                 img.style.padding = '15px 20px';
@@ -576,8 +581,7 @@
     }
 
     function nextStep(step) {
-        // 객관식(1~9)만 필수 선택 체크, 10번(주관식)은 선택
-        if (currentStep >= 1 && currentStep <= 9) {
+        if (currentStep > 0) {
             const inputs = document.querySelectorAll(`#step${currentStep} input[type="radio"]`);
             let checked = false;
             inputs.forEach(i => { if (i.checked) checked = true; });
@@ -602,8 +606,7 @@
     function closeModal() {
         document.getElementById('successModal').classList.remove('active');
         document.getElementById('surveyForm').reset();
-        document.getElementById('starValue').value = '';
-        document.getElementById('starText').innerText = '';
+        document.getElementById('starLabel').innerText = '별점을 선택해 주세요';
         document.getElementById(`step${currentStep}`).classList.remove('active');
         document.getElementById('step0').classList.add('active');
         currentStep = 0;
@@ -613,29 +616,19 @@
     }
 
     function submitSurvey() {
-        // 별점 필수 선택 체크
-        const starValue = document.getElementById('starValue').value;
-        if (!starValue) {
-            showWarningModal("별점 선택 필요", "전반적인 만족도 별점을 선택한 후 제출해 주세요.");
-            return;
-        }
+        const inputs = document.querySelectorAll(`#step11 input[type="radio"]`);
+        let checked = false;
+        inputs.forEach(i => { if (i.checked) checked = true; });
+        if (!checked) { showWarningModal("별점 미선택", "종합 만족도 별점을 선택해 주세요."); return; }
 
         const submitBtn = document.getElementById('submitBtn');
         submitBtn.disabled = true;
         submitBtn.innerText = "제출 중...";
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyvQNnsDzZChYYVYYe2W6tUKklBjNWifupQswQdN7sziTTVNnxnuTTkA32-38Dwkhmy/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbx5RIRTCVqhq_WW_1rvMeJ7cJMk6vLyG1_KQPj1s-xVx4LIU0KCmaAXQHCV-gid2DY-/exec';
         const formData = new FormData(document.getElementById('surveyForm'));
         const params = new URLSearchParams();
-        for (const pair of formData) { 
-            // 중복 전송 및 꼬임 방지를 위해 종합만족도와 starUI 관련 기본 수집 값은 제외하고 append
-            if (pair[0] !== '종합만족도' && pair[0] !== 'starUI') {
-                params.append(pair[0], pair[1]); 
-            }
-        }
-        
-        // ★요청사항 반영: 수동으로 확실하게 params 객체에 '종합만족도' 별점 키값과 밸류 추가
-        params.append('종합만족도', starValue);
+        for (const pair of formData) { params.append(pair[0], pair[1]); }
 
         fetch(scriptURL, { method: 'POST', body: params, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
             .then(() => { showModal(); })
