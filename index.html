@@ -470,11 +470,11 @@
             <div class="step" id="step11">
                 <div class="question-title">종합 만족도를 별점으로 평가해 주세요.</div>
                 <div class="star-rating">
-                    <input type="radio" name="종합만족도" id="star5" value="5"><label for="star5">★</label>
-                    <input type="radio" name="종합만족도" id="star4" value="4"><label for="star4">★</label>
-                    <input type="radio" name="종합만족도" id="star3" value="3"><label for="star3">★</label>
-                    <input type="radio" name="종합만족도" id="star2" value="2"><label for="star2">★</label>
-                    <input type="radio" name="종합만족도" id="star1" value="1"><label for="star1">★</label>
+                    <input type="radio" name="rating" id="star5" value="5"><label for="star5">★</label>
+                    <input type="radio" name="rating" id="star4" value="4"><label for="star4">★</label>
+                    <input type="radio" name="rating" id="star3" value="3"><label for="star3">★</label>
+                    <input type="radio" name="rating" id="star2" value="2"><label for="star2">★</label>
+                    <input type="radio" name="rating" id="star1" value="1"><label for="star1">★</label>
                 </div>
                 <div class="star-label" id="starLabel">별점을 선택해 주세요</div>
                 <div class="btn-group">
@@ -616,7 +616,7 @@
     }
 
     function submitSurvey() {
-        const inputs = document.querySelectorAll(`#step11 input[type="radio"]`);
+        const inputs = document.querySelectorAll(`#step11 input[name="rating"]`);
         let checked = false;
         inputs.forEach(i => { if (i.checked) checked = true; });
         if (!checked) { showWarningModal("별점 미선택", "종합 만족도 별점을 선택해 주세요."); return; }
@@ -625,10 +625,14 @@
         submitBtn.disabled = true;
         submitBtn.innerText = "제출 중...";
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzA_YBpRULtI2Q2QjLgH5_4oizuJDAuF4esoZeHWdnIv8BnwhAlCcqX4ap0fskk3QkA/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzwvP8FvUG4-wK5fG62eXLQzvdSzZwM8rQRm6jINNtC1cOOtc48o_ztIDJdo-xq4jv0/exec';
         const formData = new FormData(document.getElementById('surveyForm'));
         const params = new URLSearchParams();
-        for (const pair of formData) { params.append(pair[0], pair[1]); }
+        for (const pair of formData) {
+            // rating key를 종합만족도로 변환하여 전송
+            const key = pair[0] === 'rating' ? '종합만족도' : pair[0];
+            params.append(key, pair[1]);
+        }
 
         fetch(scriptURL, { method: 'POST', body: params, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
             .then(() => { showModal(); })
